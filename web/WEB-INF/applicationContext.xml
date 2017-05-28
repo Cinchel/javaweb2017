@@ -18,6 +18,18 @@
     <tx:annotation-driven transaction-manager="transactionManager" />
     <!-- 使用GBLIB，基于类创建代理对象，用于业务层事务 -->
     <aop:aspectj-autoproxy proxy-target-class="true" />
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- 默认拦截所有请求 -->
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/index" />
+            <mvc:exclude-mapping path="/public/**" />
+            <mvc:exclude-mapping path="/loginPost" />
+            <mvc:exclude-mapping path="/error" />
+            <bean class="com.AuthorityInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
     <!-- SpringMVC使用注释 -->
     <mvc:annotation-driven >
         <mvc:message-converters register-defaults="true">

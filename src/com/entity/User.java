@@ -9,7 +9,9 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(unique = true, nullable = false, length = 30)
 	private String userName;
+    @Column(nullable = false, length = 40)
 	private String password;
 	/*
 	role表示用户角色，分别有'root'，'admin'，'teacher'三种角色
@@ -19,9 +21,12 @@ public class User {
 	 */
 	/*private String role;*/
 
+    @Column(length = 20)
 	private String phone;//电话号码
 	private String email;//电子邮件
+    @Column(length = 20)
 	private String title;//职称
+    @Column(length = 1000)
 	private String introduction;//简介
 
 	public int getId() {
