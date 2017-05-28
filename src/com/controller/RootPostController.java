@@ -20,11 +20,11 @@ public class RootPostController {
 	@Autowired
 	private UserService userService;
 
-	@ResponseBody
-	@PostMapping("/usersListPost")
-	public String usersList(int offset,int limit) {
-		return userService.usersList(offset,limit);
-	}
+    @ResponseBody
+    @PostMapping("/usersListPost")
+    public String usersList(int offset,int limit) {
+        return userService.usersList(offset,limit);
+    }
 
 
     @ResponseBody
@@ -32,8 +32,8 @@ public class RootPostController {
     public String addUser(String userName, String title, String introduction, String phone, String role) {
         User user = userService.getUserWithoutPassword(userName);
         if(user!=null) return Json.writeStatus(0,"添加失败，该用户已存在！");
-	    user = userService.insertUser(userName,title,introduction,phone,role);
-	    if(user!=null) return Json.writeStatus(1,"添加成功");
+        user = userService.insertUser(userName,title,introduction,phone,role);
+        if(user!=null) return Json.writeStatus(1,"添加成功");
         else return Json.writeStatus(0,"添加失败，未知错误");
     }
 }

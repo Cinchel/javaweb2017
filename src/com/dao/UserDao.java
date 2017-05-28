@@ -48,7 +48,7 @@ public class UserDao extends GenericDao<User> {
         return user;
     }
 	public List<User> usersList(int offset, int limit) {
-        String jpql = "SELECT u from User as u ORDER BY id";
+        String jpql = "SELECT u from User as u WHERE u.userName != 'root' order by id";
         Query query = getEntityManager().createQuery(jpql);
 
         //query.setParameter("userName", userName);
@@ -75,7 +75,7 @@ public class UserDao extends GenericDao<User> {
         }
     }
     public Long usersCount() {
-        String jpql = "SELECT count(u) FROM User u";
+        String jpql = "SELECT count(u) FROM User u where u.userName != 'root'";
         Query query = getEntityManager().createQuery(jpql);
         return (Long)query.getSingleResult();
     }

@@ -16,7 +16,7 @@ public class Json {
     public static<T> String writeTableList(Long total, List<T> data) {
         JSONObject obj = new JSONObject();
         obj.put("total",total);
-        obj.put("data",data);
+        obj.put("rows",data);
         return obj.toString();
     }
 }
