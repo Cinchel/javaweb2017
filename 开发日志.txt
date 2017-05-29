@@ -1,16 +1,5 @@
 teacher的exams需要延迟加载
 
-单元测试类Junit.UserControllerLoginTest用于测试后台post文件，一个函数对应一个后台post请求测试。
-比如addUser()用于测试root添加用户操作
-
-request请求格式可以直接从代码中获悉，形如：
-.post("/rootPost/addUser")
-.param("userName", "张猛治5")
-.param("title","教授")
-.param("introduction","我就是张猛治，哈哈")
-.param("role","teacher")
-.param("phone","15545016598")
-可以获悉请求地址和post参数。
-
-response格式在函数里面的注释中，所有response返回200状态码，不同的是返回的body，数据格式为json字符串
-形如：{"message":"添加成功","status":1} ／ {"total":3,"data":[{"password":"","id":1,"userName":"root","introduction":"超级管理员"}]}
+web/public存放静态文件，不设拦截器
+web/WEB-INF/jsp/root.jsp 登录页面
+web/WEB-INF/jsp/root.jsp 超级管理员管理页面

@@ -12,10 +12,10 @@ public class BaseController {
     public String getIndex() {return "index";}
 
 
-	/*@GetMapping("/{root}")
+	@GetMapping("/{root}")
 	public void getView() {}
-	@GetMapping("/{root}/{view}")
-	public void getView2() {}
-	@GetMapping("/{root}/{root2}/{view}")
-	public void getView3() {}*/
+//	@GetMapping("/{root}/{view}")
+//	public void getView2() {}
+//	@GetMapping("/{root}/{root2}/{view}")
+//	public void getView3() {}
 }

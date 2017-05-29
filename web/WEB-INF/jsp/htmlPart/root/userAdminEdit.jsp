@@ -3,7 +3,7 @@
 </table>
 <script>
     function userAdminEdit(){
-        $('#userAdmiEdit-usersList').bootstrapTable('refresh',{url:'rootPost/usersListPost'})
+        $('#userAdmiEdit-usersList').bootstrapTable('refresh');
     }
     $($('#userAdmiEdit-usersList').bootstrapTable({
         afterLoad: function() {
@@ -11,7 +11,7 @@
         },
         method: 'get',
         idField: 'id',
-
+        url:'rootPost/usersListPost',
         classes: 'table table-striped table-condensed table-hover',
         method: 'get',
         columns: [{

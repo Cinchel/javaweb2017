@@ -19,7 +19,6 @@ import java.util.List;
 public class UserService {
 	@Autowired
 	private UserDao userDao;
-	
 	public User getUser(String userName, String password) {
 		return userDao.find(userName, password);
 	}
@@ -34,13 +33,13 @@ public class UserService {
 			obj.put("id",user.getId());
 			obj.put("userName",user.getUserName());
 			String role = user.getClass().toString();
-			if(role.equals("class com.entity.Teacher")) obj.put("role","教师（<a onclick=userAdminEdit_toggleRole("+user.getId()+")>升为管理员</a>）");
-			else if(role.equals("class com.entity.Admin")) obj.put("role","管理员（<a onclick=userAdminEdit_toggleRole("+user.getId()+")>降为教师</a>）");
+			if(role.equals("class com.entity.Teacher")) obj.put("role","教师&nbsp;<button class='btn btn-success' onclick=userAdminEdit_toggleRole("+user.getId()+")>升为管理员</button>");
+			else if(role.equals("class com.entity.Admin")) obj.put("role","管理员&nbsp;<button class='btn btn-info' onclick=userAdminEdit_toggleRole("+user.getId()+")>降为教师</button>");
 			else if(role.equals("class com.entity.Root")) obj.put("role","root");
 			obj.put("introduction",user.getIntroduction());
 			obj.put("phone",user.getPhone());
 			obj.put("title",user.getTitle());
-			obj.put("delete","<a onclick='userAdminEdit_delete("+user.getId()+")'>删除</a>");
+			obj.put("delete","<button class='btn btn-danger' onclick='userAdminEdit_delete("+user.getId()+")'>删除</button>");
 			list2.add(obj);
 		}
 		return Json.writeTableList(userDao.usersCount(), list2);
@@ -56,15 +55,12 @@ public class UserService {
 		user.setPhone(phone);
 		return userDao.insertUser(user);
 	}
-
 	public boolean userDelete(int userId) {
 		return userDao.userDelete(userId);
 	}
-
 	public boolean userToggleRole(int userId) {
 		return userDao.userToggleRole(userId);
 	}
-
 	public String userAdminEdit(int pk,String name,String value) {
 		System.out.println(name);
 		if(name.equals("userName")) {
