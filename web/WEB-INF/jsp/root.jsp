@@ -8,7 +8,7 @@
     var adminTreeViewData;
     function allHide() {
         $('#userAdminCreate').hide();
-
+        $('#userAdminEdit').hide();
     }
 
 
@@ -28,10 +28,6 @@
                         {
                             "text": "编辑用户",
                             "name": "userAdminEdit"
-                        },
-                        {
-                            "text": "权限管理",
-                            "name": "userAdminRole"
                         }
                     ]
                 },
@@ -57,18 +53,16 @@
                 $('#adminTitle').html(node.text);
                 var cos = node.name;
                 $('#' + cos).show();
+                //$('#userAdminEdit').show();
                 if (node.name == "userAdminCreate") {
-                    $('#deptAdminCreate-createReset').click();
-                    $('#deptAdminCreate-type').removeAttr("disabled");
-                    $('#deptAdminCreate-updateSubmit').hide();
-                    $('#deptAdminCreate-createSubmit').show();
+                }
+                else if(node.name == "userAdminEdit") {
+                    userAdminEdit();
                 }
             },
             onNodeUnselected: function (event, node) {
             }
         });
-
-
     });
 </script>
 <div id="adminContainer" class="container">
@@ -85,7 +79,9 @@
                 <jsp:include page="htmlPart/root/userAdminCreate.jsp"/>
             </div>
 
-
+            <div id="userAdminEdit" style="display: none">
+                <jsp:include page="htmlPart/root/userAdminEdit.jsp"/>
+            </div>
         </div>
     </div>
 

@@ -1,61 +1,69 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div id="userAdminCreate"  >
-    <div class="row row-margin-bottom">
-        <label for="userAdminCreate-name" class="col-sm-3 text-right">用户姓名：</label>
-        <div class="col-sm-9">
-            <input class="form-control" type="text" id="userAdminCreate-name">
-        </div>
-    </div>
-
-
-    <div class="row row-margin-bottom" id="userAdminCreate-createSubmit">
-        <div class="col-sm-3 col-sm-offset-4">
-            <input class="form-control" type="button" id="userAdminCreate-create" value="添加">
-        </div>
-        <div class="col-sm-3">
-            <input class="form-control" type="button" id="userAdminCreate-createReset" value="重置">
-        </div>
-    </div>
-    <div class="row row-margin-bottom" id="userAdminCreate-updateSubmit">
-        <div class="col-sm-2">
-            <input class="form-control" type="hidden" id="userAdminCreate-userID" value="">
-        </div>
-        <div class="col-sm-3">
-            <input class="form-control" type="button" id="userAdminCreate-update" value="保存更改">
-        </div>
-        <div class="col-sm-3">
-            <input class="form-control" type="button" id="userAdminCreate-updateReset"
-                   value="取消更改">
-        </div>
-        <div class="col-sm-3">
-            <input class="form-control" type="button" id="userAdminCreate-updateCancel"
-                   value="返回列表">
-        </div>
+<div class="row row-margin-bottom">
+    <label for="userAdminCreate-userName" class="col-sm-2 text-right">姓名：</label>
+    <div class="col-sm-9">
+        <input class="form-control" type="text" id="userAdminCreate-userName">
     </div>
 </div>
+
+<div class="row row-margin-bottom">
+    <label for="userAdminCreate-role" class="col-sm-2 text-right">账号类型：</label>
+    <div class="col-sm-9">
+        <select class="form-control" type="text" id="userAdminCreate-role">
+            <option value="teacher">普通教师</option>
+            <option value="admin">管理员</option>
+        </select>
+    </div>
+</div>
+
+<div class="row row-margin-bottom">
+    <label for="userAdminCreate-phone" class="col-sm-2 text-right">电话：</label>
+    <div class="col-sm-9">
+        <input class="form-control" type="text" id="userAdminCreate-phone">
+    </div>
+</div>
+
+<div class="row row-margin-bottom">
+    <label for="userAdminCreate-title" class="col-sm-2 text-right">职称：</label>
+    <div class="col-sm-9">
+        <input class="form-control" type="text" id="userAdminCreate-title">
+    </div>
+</div>
+
+<div class="row row-margin-bottom">
+    <label for="userAdminCreate-phone" class="col-sm-2 text-right">简介：</label>
+    <div class="col-sm-9">
+        <textarea class="form-control" id="userAdminCreate-introduction"></textarea>
+    </div>
+</div>
+
+<div class="row row-margin-bottom" id="userAdminCreate-createSubmit">
+    <div class="col-sm-3 col-sm-offset-3">
+        <input class="form-control btn-primary" type="button" id="userAdminCreate-create" value="添加">
+    </div>
+</div>
+
 <script>
     $('#userAdminCreate-create').click(function () {
-        $.post('admin/root/adminuserCreatePost.php', {
-            name: $('#userAdminCreate-name').val()
-        }, function (data) {
-            var result = JSON.parse(data);
+        $.post('rootPost/addUser', {
+            userName: $('#userAdminCreate-userName').val(),
+            phone: $('#userAdminCreate-phone').val(),
+            title: $('#userAdminCreate-title').val(),
+            introduction: $('#userAdminCreate-introduction').val(),
+            role: $('#userAdminCreate-role').val()
+        }, function (result) {
             if (result.status == 1) {
-                $('#userAdminCreate-createReset').click();
-                var node = $('#adminTreeView').treeview('search', ['编辑部门', {
-                    ignoreCase: true,     // case insensitive
-                    exactMatch: false,    // like or equals
-                    revealResults: false  // reveal matching nodes
-                }]);
-                $('#adminTreeView').treeview('clearSearch');
-                $('#adminTreeView').treeview('selectNode', node);
+                $('#errorAlert-content').html(result.message);
+                $('#errorAlert').modal('show');
+                $('#userAdminCreate-userName').val('');
+                $('#userAdminCreate-phone').val('');
+                $('#userAdminCreate-title').val('');
+                $('#userAdminCreate-introduction').val('');
             } else {
                 $('#errorAlert-content').html(result.message);
                 $('#errorAlert').modal('show');
             }
         });
-    });
-    $('#userAdminCreate-createReset').click(function () {
-        $('#userAdminCreate-name').val('');
     });
 </script>

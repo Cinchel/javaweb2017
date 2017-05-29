@@ -141,17 +141,72 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
+<div class="modal fade" id="errorAlert" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Alert!
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <strong><p id="errorAlert-content"></p></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="ErrorAlertClose"
+                        data-dismiss="modal">Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="confirmBox" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="confirmBox-title">
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <strong><p id="confirmBox-content"></p></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="confirmBox-yes"
+                        data-dismiss="modal">确定
+                </button>
+                <button type="button" class="btn btn-success" id="confirmBox-no"
+                        data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div><!-- /.modal -->
+
 
 <script type="text/javascript">
 
     $(function () {
         $('#logout').click(function () {
-            $.post('loginPost.php?order=2', {}, function (data) {
-                var result = JSON.parse(data);
+            $.post('loginPost.php?order=2', {}, function (result) {
                 if (result.status == 1) {
                     window.location.href = "index.php";
                 } else {
-                    $('#errorAlert-content').html(reault.message);
+                    $('#errorAlert-content').html(result.message);
                     $('#errorAlert').modal('show');
                 }
             });
@@ -179,8 +234,7 @@
         $.post('modifyPasswordPost.php', {
             oldPwd: $.md5(oldPwd),
             newPwd: $.md5(newPwd)
-        }, function (data) {
-            var result = JSON.parse(data);
+        }, function (result) {
             if (result.status == 1) {
                 clearAll();
                 $('#UpdatePassModel').modal('hide');

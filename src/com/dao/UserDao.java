@@ -1,6 +1,8 @@
 package com.dao;
 
+import com.entity.Admin;
 import com.entity.Root;
+import com.entity.Teacher;
 import com.entity.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,8 +49,20 @@ public class UserDao extends GenericDao<User> {
         }
         return user;
     }
+    public User findWithoutPassword(int userId) {
+        String jpql = "FROM User u WHERE u.id=:id";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("id", userId);
+        User user = null;
+        try {
+            user = (User) query.getSingleResult();
+        } catch (NoResultException e) {
+            user = null;
+        }
+        return user;
+    }
 	public List<User> usersList(int offset, int limit) {
-        String jpql = "SELECT u from User as u WHERE u.userName != 'root' order by id";
+        String jpql = "SELECT u from User as u WHERE u.userName != 'root' order by u.class";
         Query query = getEntityManager().createQuery(jpql);
 
         //query.setParameter("userName", userName);
@@ -57,9 +71,6 @@ public class UserDao extends GenericDao<User> {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
-        for (User user:list) {
-            user.setPassword("");//为了安全起见，没有把密码传给前端
-        }
         return list;
     }
     @Transactional
@@ -78,5 +89,58 @@ public class UserDao extends GenericDao<User> {
         String jpql = "SELECT count(u) FROM User u where u.userName != 'root'";
         Query query = getEntityManager().createQuery(jpql);
         return (Long)query.getSingleResult();
+    }
+
+    public boolean userDelete(int userId) {
+	    try {
+            String jpql = "DELETE from User u where u.id = :userId and u.userName!='root'";
+            Query query = getEntityManager().createQuery(jpql);
+            query.setParameter("userId", userId);
+            query.executeUpdate();
+        }
+        catch (Exception e){
+	        return false;
+        }
+        return true;
+    }
+    @Transactional
+    public boolean userToggleRole(int userId) {
+        try {
+            User user = findWithoutPassword(userId);
+            if(user==null) return false;
+            String sql;
+            if(user.getClass().toString().equals("class com.entity.Teacher")) {
+                sql = "update user set DTYPE = 'Admin' where id=?";
+            }
+            else if(user.getClass().toString().equals("class com.entity.Admin")) {
+                sql = "update user set DTYPE = 'Teacher' where id=?";
+            }
+            else return false;
+            Query query =  this.getEntityManager().createNativeQuery(sql);
+            query.setParameter(1,userId);
+            query.executeUpdate();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+
+    public boolean userModify(int pk, String name, String value) {
+        try {
+            User user = findWithoutPassword(pk);
+            if(user==null) return false;
+            String sql = "update user set "+name+" = ? where id=?";
+            Query query =  this.getEntityManager().createNativeQuery(sql);
+            query.setParameter(1,value);
+            query.setParameter(2,pk);
+            query.executeUpdate();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
 }

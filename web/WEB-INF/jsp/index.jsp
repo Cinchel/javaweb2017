@@ -158,8 +158,7 @@
                 userName: $('#login-username').val(),
                 password: $.md5($('#login-password').val()),
                 role: $('input:radio[name="login-role"]:checked').val()
-            }, function (data) {
-                var result = JSON.parse(data);
+            }, function (result) {
                 if (result.status == 1) {
                     if(result.message=='class com.entity.Root')
                         window.location.href = "root";

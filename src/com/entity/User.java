@@ -28,7 +28,16 @@ public class User {
 	private String title;//职称
     @Column(length = 1000)
 	private String introduction;//简介
+	@ManyToMany
+	private Set<ExamRoom> examRooms;
 
+	public Set<ExamRoom> getExamRooms() {
+		return examRooms;
+	}
+
+	public void setExamRooms(Set<ExamRoom> examRooms) {
+		this.examRooms = examRooms;
+	}
 	public int getId() {
 		return id;
 	}

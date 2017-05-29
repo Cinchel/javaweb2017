@@ -9,15 +9,4 @@ import java.util.Set;
  */
 @Entity
 public class Teacher extends User{
-
-    @ManyToMany
-    private Set<ExamRoom> examRooms;
-
-    public Set<ExamRoom> getExamRooms() {
-        return examRooms;
-    }
-
-    public void setExamRooms(Set<ExamRoom> examRooms) {
-        this.examRooms = examRooms;
-    }
 }

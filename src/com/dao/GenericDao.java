@@ -84,4 +84,5 @@ public abstract class GenericDao<T> {
 	public EntityManager getEntityManager() {
 		return entityManager;
 	}
+
 }

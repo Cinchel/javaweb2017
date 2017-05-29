@@ -18,7 +18,7 @@
     <tx:annotation-driven transaction-manager="transactionManager" />
     <!-- 使用GBLIB，基于类创建代理对象，用于业务层事务 -->
     <aop:aspectj-autoproxy proxy-target-class="true" />
-    <!-- 拦截器 -->
+    <!-- 验证登录拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
             <!-- 默认拦截所有请求 -->
@@ -36,6 +36,8 @@
             <!-- 解决@ResponseBody中文乱码 -->
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />
+                <property name="writeAcceptCharset" value="false" />
+                <property name="defaultCharset" value="UTF-8" />
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
