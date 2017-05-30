@@ -33,8 +33,8 @@ public class UserService {
 			obj.put("id",user.getId());
 			obj.put("userName",user.getUserName());
 			String role = user.getClass().toString();
-			if(role.equals("class com.entity.Teacher")) obj.put("role","教师&nbsp;<button class='btn btn-success' onclick=userAdminEdit_toggleRole("+user.getId()+")>升为管理员</button>");
-			else if(role.equals("class com.entity.Admin")) obj.put("role","管理员&nbsp;<button class='btn btn-info' onclick=userAdminEdit_toggleRole("+user.getId()+")>降为教师</button>");
+			if(role.equals("class com.entity.Teacher")) obj.put("role","教师&nbsp;&nbsp;<button class='btn btn-success' onclick=userAdminEdit_toggleRole("+user.getId()+")>升为管理员</button>");
+			else if(role.equals("class com.entity.Admin")) obj.put("role","管理员&nbsp;&nbsp;<button class='btn btn-info' onclick=userAdminEdit_toggleRole("+user.getId()+")>降为教师</button>");
 			else if(role.equals("class com.entity.Root")) obj.put("role","root");
 			obj.put("introduction",user.getIntroduction());
 			obj.put("phone",user.getPhone());

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/rootPost")
+@RequestMapping("/root/rootPost")
 public class RootPostController {
 	@Autowired
 	private UserService userService;

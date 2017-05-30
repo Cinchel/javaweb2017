@@ -161,9 +161,9 @@
             }, function (result) {
                 if (result.status == 1) {
                     if(result.message=='class com.entity.Root')
-                        window.location.href = "root";
+                        window.location.href = "root/welcome";
                     else if(result.message=='class com.entity.Admin')
-                        window.location.href = "admin";
+                        window.location.href = "admin/welcome";
                     else if(result.message=='class com.entity.Teacher')
                         window.location.href = "teacher";
                     else {
