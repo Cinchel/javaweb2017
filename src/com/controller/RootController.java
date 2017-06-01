@@ -14,7 +14,7 @@ public class RootController {
 
 	@GetMapping("/root")
 	public String root(Model model) {
-        model.addAttribute("title", "超级管理员");
+        model.addAttribute("title", "管理页面");
         //System.out.println("SSSS");
 		return "root/root";
 	}
