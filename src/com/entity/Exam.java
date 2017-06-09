@@ -3,6 +3,7 @@ package com.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.Date;
 import java.util.Set;
 
@@ -12,8 +13,11 @@ public class Exam {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;//考试名称
-    private Date startTime;
-    private Date endTime;
+   /* private Date startTime;
+    private Date endTime;*/
+    private java.sql.Date date;
+    private Time startTime;
+    private Time endTime;
     @ManyToOne
 	private Admin createAdmin;//创建考试的管理员
 
@@ -43,8 +47,7 @@ public class Exam {
     public void setCreateAdmin(Admin createAdmin) {
         this.createAdmin = createAdmin;
     }
-
-    public Date getStartTime() {
+  /*  public Date getStartTime() {
         return startTime;
     }
 
@@ -58,7 +61,8 @@ public class Exam {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
+    }*/
+
 
     public Set<ExamRoom> getExamRooms() {
         return examRooms;
@@ -68,4 +72,28 @@ public class Exam {
         this.examRooms = examRooms;
     }
 
+
+    public java.sql.Date getDate() {
+        return date;
+    }
+
+    public void setDate(java.sql.Date date) {
+        this.date = date;
+    }
+
+    public Time getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
+    }
+
+    public Time getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
+    }
 }
