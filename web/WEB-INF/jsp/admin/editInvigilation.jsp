@@ -140,7 +140,7 @@
                     $('#errorAlert-content').html("删除失败："+data.message);
                     $('#errorAlert').modal('show');
                 }
-                else userAdminEdit();
+                else examEdit();
             });
         };
         $('#confirmBox-yes').unbind();
