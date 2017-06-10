@@ -7,7 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="header.jsp"/>
-
+<link rel='stylesheet' type='text/css' href='/public/css/bootstrap-datetimepicker.min.css'/>
+<script src='/public/js/bootstrap-datetimepicker.min.js' type='text/javascript'></script>
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -51,7 +52,7 @@
                         </ul>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="x_content">n
+                    <div class="x_content">
                         <div class="row row-margin-bottom">
                             <label for="name" class="col-sm-2 text-right">监考名称：</label>
                             <div class="col-sm-9">
@@ -59,20 +60,16 @@
                             </div>
                         </div>
                         <div class="row row-margin-bottom">
-                            <label for="date1" class="col-sm-2 text-right">监考日期：</label>
+                            <label for="date" class="col-sm-2 text-right">监考日期：</label>
                             <div class="col-sm-9" >
-
-                                    <%--<input type='text' id='date' style="width: 590px;border: 0"/>--%>
-                                    <input class="form-control" type="date" id="date1"/>
-
-
+                                <input class="form-control" type="text"  id="date">
                             </div>
                         </div>
 
                         <div class="row row-margin-bottom">
                             <label for="examTime" class="col-sm-2 text-right">监考时间：</label>
                             <div class="col-sm-9">
-                                <select class="form-control" type="text" id="examTime" onchange="chg(this);">
+                                <select class="form-control" type="text" id="examTime">
                                     <option value="c1">第一、二节</option>
                                     <option value="c2">第三、四节</option>
                                     <option value="c3">第五、六节</option>
@@ -84,32 +81,14 @@
                         <div class="row row-margin-bottom">
                             <label for="startTime" class="col-sm-2 text-right">开始时间：</label>
                             <div class="col-sm-9">
-
-                            <%--    <div class="form-control">
-                                    <input class="time" type="text" size="8" readonly onclick="_SetTime(this)" id='startTime' style="width: 590px;border: 0"/>
-                                </div>--%>
-                                <select class="form-control" type="text" id="startTime" onchange="chg2(this)";>
-                                    <option value="08:00:00">08:00:00</option>
-                                    <option value="10:10:00">10:10:00</option>
-                                    <option value="13:30:00">13:30:00</option>
-                                    <option value="15:40:00">15:40:00</option>
-                                </select>
-
+                                <input class="form-control" type="text" id="startTime">
                             </div>
                         </div>
 
                         <div class="row row-margin-bottom">
                             <label for="endTime" class="col-sm-2 text-right">结束时间：</label>
-                            <<div class="col-sm-9">
-                               <%-- <div class="form-control">
-                                    <input class="time" type="text" size="8" readonly onclick="_SetTime(this)" id='endTime' style="width: 590px;border: 0"/>
-                                </div>--%>
-                            <select class="form-control" type="text" id="endTime">
-                                <option value="10:00:00">10:00:00</option>
-                                <option value="12:10:00">12:10:00</option>
-                                <option value="15:30:00">15:30:00</option>
-                                <option value="17:40:00">17:40:00</option>
-                            </select>
+                            <div class="col-sm-9">
+                            <input class="form-control" type="text" id="endTime">
                             </div>
                         </div>
 
@@ -117,7 +96,7 @@
                         <div class="row row-margin-bottom">
                             <label for="Roomname" class="col-sm-2 text-right">地点：</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="Roomname"></textarea>
+                                <input class="form-control" id="Roomname">
                             </div>
                         </div>
                         <div class="row row-margin-bottom" id="userAdminCreate-createSubmit">
@@ -134,106 +113,90 @@
 </div>
 
 <script>
-    $('#examAdd').click(function () {
-        $.post('adminPost/addInvigilation', {
-            name: $('#name').val(),
-            date: $('#date1').val(),
-            startTime: $('#startTime').val(),
-            endTime: $('#endTime').val(),
-        }, function (result) {
-            if (result.status == 1) {
-                $('#errorAlert-content').html(result.message);
-                $('#errorAlert').modal('show');
-                     $('#name').val(),
-                     $('#date').val(),
-                     $('#startTime').val(),
-                     $('#endTime').val()
-            } else {
-                $('#errorAlert-content').html(result.message);
-                $('#errorAlert').modal('show');
+    $(function(){
+        $('#examAdd').click(function () {
+            $.post('adminPost/addInvigilation', {
+                name: $('#name').val(),
+                date: $('#date').val(),
+                startTime: $('#startTime').val(),
+                endTime: $('#endTime').val(),
+            }, function (result) {
+                if (result.status == 1) {
+                    $('#errorAlert-content').html(result.message);
+                    $('#errorAlert').modal('show');
+                } else {
+                    $('#errorAlert-content').html(result.message);
+                    $('#errorAlert').modal('show');
+                }
+            });
+        });
+        $('#examTime').change(function () {
+            if($('#examTime').val()=='c1') {
+                $('#startTime').val('08:00:00');
+                $('#endTime').val('10:00:00');
+            } else if($('#examTime').val()=='c2') {
+                $('#startTime').val('10:10:00');
+                $('#endTime').val('12:10:00');
+            } else if($('#examTime').val()=='c3') {
+                $('#startTime').val('13:30:00');
+                $('#endTime').val('15:30:00');
+            } else if($('#examTime').val()=='c4') {
+                $('#startTime').val('15:40:00');
+                $('#endTime').val('17:40:00');
             }
         });
     });
 </script>
-<%--日期--%>
-<%--<script src="../public/calendar/js/jquery-1.11.0.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="../public/calendar/js/dcalendar.picker.js"></script>
+<%--%--日期&ndash;%&gt;
+<script src="../public/calendar/js/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="../public/js/dcalendar.picker.js"></script>
 <script type="text/javascript">
     $('#date').dcalendarpicker({
         format:'yyyy-mm-dd'
     });
 </script>--%>
-<%--联动--%>
-<%--<script>
-    //声明省
-    var pres = ["第一、二节", "第三、四节", "第五、六节","第七、八节"]; //直接声明Array
-    //声明市
-    var cities = [
-        ["08:00:00"],
-        ["10:10:00"],
-        ["13:30:00"],
-        ["15:40:00"]
-    ];
-    var areas = [
-        [
 
-            ["10:00:00"]
-        ],
-        [
-            ["12:10:00"]
-        ],
-        [
-            ["15:30:00"]
-        ],
-        [
+<script>
 
-            ["17:40:00"]
-        ]
-    ]
-    //设置一个省的公共下标
-    var pIndex = -1;
-    var preEle = document.getElementById("examTime");
-    var cityEle = document.getElementById("startTime");
-    var areaEle = document.getElementById("endTime");
-    //先设置省的值
-    for (var i = 0; i < pres.length; i++) {
-        //声明option.<option value="pres[i]">Pres[i]</option>
-        var op = new Option(pres[i], i);
-        //添加
-        preEle.options.add(op);
-    }
-    function chg(obj) {
-        if (obj.value == -1) {
-            cityEle.options.length = 0;
-            areaEle.options.length = 0;
-        }
-        //获取值
-        var val = obj.value;
-        pIndex = obj.value;
-        //获取ctiry
-        var cs = cities[val];
-        //获取默认区
-        var as = areas[val][0];
-        //先清空市
-        cityEle.options.length = 0;
-        areaEle.options.length = 0;
-        for (var i = 0; i < cs.length; i++) {
-            var op = new Option(cs[i], i);
-            cityEle.options.add(op);
-        }
-        for (var i = 0; i < as.length; i++) {
-            var op = new Option(as[i], i);
-            areaEle.options.add(op);
-        }
-    }
-    function chg2(obj) {
-        var val = obj.selectedIndex;
-        var as = areas[pIndex][val];
-        areaEle.options.length = 0;
-        for (var i = 0; i < as.length; i++) {
-            var op = new Option(as[i], i);
-            areaEle.options.add(op);
-        }
-    }
-</script>--%>
+    $(function() {
+
+        $("#date").datetimepicker({
+            format: "yyyy-mm-dd",
+            weekStart: 1,
+            autoclose: true,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            initialDate: new Date()
+        });
+
+        $("#startTime").datetimepicker({
+            format: "hh:ii:ss",
+            weekStart: 1,
+            autoclose: true,
+            todayHighlight: 1,
+            startView: 0,
+            minView: 0,
+            forceParse: 0,
+            showMeridian: 1,
+            initialDate: new Date()
+        });
+        $("#endTime").datetimepicker({
+            format: "hh:ii:ss",
+            weekStart: 1,
+            autoclose: true,
+            todayHighlight: 1,
+            startView: 0,
+            minView: 0,
+            forceParse: 0,
+            showMeridian: 1,
+            initialDate: new Date()
+        });
+        $('#term-base').datetimepicker('setDaysOfWeekDisabled', [0,2,3,4,5,6]);
+
+    });
+
+</script>
 <jsp:include page="footer.jsp"/>
