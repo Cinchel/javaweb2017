@@ -51,10 +51,10 @@
                                     <input class="form-control" type="text" readonly id="term-base">
                                 </div>
                             </div>
-
+                            <div class="ln_solid"></div>
                             <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <button id="save" class="btn btn-primmary" type="button">保存</button>
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-sm-offset-3">
+                                    <button id="save" class="btn btn-success col-sm-12" type="button">保存</button>
                                 </div>
                             </div>
 

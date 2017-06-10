@@ -3,6 +3,7 @@ package com.controller;
 import com.entity.Admin;
 import com.entity.Exam;
 import com.entity.User;
+import com.exception.PostException;
 import com.service.ExamService;
 import com.service.UserService;
 import com.util.Json;
@@ -83,7 +84,7 @@ public class AdminPostController {
 
     @ResponseBody
     @RequestMapping(value="/userAdminEdit",produces = "application/text; charset=utf-8")
-    public String userAdminEdit(int pk, String name, String value, HttpServletResponse response) {
+    public String userAdminEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
         String res = userService.userAdminEdit(pk, name, value);
         if(!res.equals("")) response.setStatus(500);
         return res;
@@ -112,7 +113,7 @@ public class AdminPostController {
 
     @ResponseBody
     @RequestMapping(value="/addUser",produces = "application/json; charset=utf-8")
-    public String addUser(String userName, String title, String introduction, String phone, String role) {
+    public String addUser(String userName, String title, String introduction, String phone, String role) throws PostException {
         User user = userService.getUserWithoutPassword(userName);
         if(user!=null) return Json.writeStatus(0,"添加失败，该用户已存在！");
         user = userService.insertUser(userName,title,introduction,phone,role);
