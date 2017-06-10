@@ -51,9 +51,9 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/editInvigilation",produces = "application/text; charset=utf-8")
-    public void examEdit(int id, String name, String value, HttpServletResponse response) throws PostException {
+    public void examEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
         System.out.print("id"+"   "+" 控制的列名"+name+"获取的值"+value);
-        examService.examEdit(id, name, value);
+        examService.examEdit(pk, name, value);
     }
     //用户
     @Autowired
