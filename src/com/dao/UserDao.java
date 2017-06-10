@@ -108,6 +108,7 @@ public class UserDao extends GenericDao<User> {
         }
         return true;
     }
+
     @Transactional
     public boolean userToggleRole(int userId) {
         try {

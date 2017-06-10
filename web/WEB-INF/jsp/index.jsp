@@ -165,7 +165,7 @@
                     else if(result.message=='class com.entity.Admin')
                         window.location.href = "admin/welcome";
                     else if(result.message=='class com.entity.Teacher')
-                        window.location.href = "teacher";
+                        window.location.href = "teacher/a";
                     else {
                         $('#login-password').val('');
                         $('#AlertP').html('错误的返回: '+result.message);
