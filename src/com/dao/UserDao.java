@@ -4,6 +4,8 @@ import com.entity.Admin;
 import com.entity.Root;
 import com.entity.Teacher;
 import com.entity.User;
+import com.exception.ExceptionController;
+import com.exception.PostException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,12 @@ public class UserDao extends GenericDao<User> {
                     root.setUserName("root");
                     root.setPassword("e10adc3949ba59abbe56e057f20f883e");
                     root.setIntroduction("超级管理员");
-                    user = insertUser(root);
+                    try {
+                        user = insertUser(root);
+                    } catch (PostException e1) {
+                        user = null;
+                        e1.printStackTrace();
+                    }
                 }
             }
 		}
@@ -74,16 +81,14 @@ public class UserDao extends GenericDao<User> {
         return list;
     }
     @Transactional
-	public User insertUser(User user) {
-	    try {
-	        user.setPassword("e10adc3949ba59abbe56e057f20f883e");
-            persist(user);
-            refresh(user);
-            return user;
-        } catch(Exception e) {
-            System.out.println(e.toString());
-            return null;
-        }
+	public User insertUser(User user) throws PostException {
+        if(user.getUserName().length()<2 || user.getUserName().length()>10) throw new PostException("用户名长度必须在2~10之间");
+        if(!user.getPhone().matches("\\d+")) throw new PostException("电话号码只能包含数字字符");
+        if(user.getPhone().length()<2 || user.getPhone().length()>18) throw new PostException("电话长度必须在2~18之间");
+        user.setPassword("e10adc3949ba59abbe56e057f20f883e");
+        persist(user);
+        refresh(user);
+        return user;
     }
     public Long usersCount() {
         String jpql = "SELECT count(u) FROM User u where u.userName != 'root'";

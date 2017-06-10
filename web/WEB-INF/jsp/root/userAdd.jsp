@@ -12,18 +12,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Plain Page</h3>
-            </div>
-
-            <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                    </div>
-                </div>
+                <h3>用户编辑</h3>
             </div>
         </div>
 
@@ -33,69 +22,60 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Plain Page</h2>
+                        <h2>添加用户</h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Settings 1</a>
-                                    </li>
-                                    <li><a href="#">Settings 2</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a class="close-link"><i class="fa fa-close"></i></a>
                             </li>
                         </ul>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <div class="row row-margin-bottom">
-                            <label for="userAdminCreate-userName" class="col-sm-2 text-right">姓名：</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" id="userAdminCreate-userName">
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-userName">姓名
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="userAdminCreate-userName" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row row-margin-bottom">
-                            <label for="userAdminCreate-role" class="col-sm-2 text-right">账号类型：</label>
-                            <div class="col-sm-9">
-                                <select class="form-control" type="text" id="userAdminCreate-role">
-                                    <option value="teacher">普通教师</option>
-                                    <option value="admin">管理员</option>
-                                </select>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-role">账号类型</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select id="userAdminCreate-role" class="form-control col-md-7 col-xs-12">
+                                        <option value="teacher">普通教师</option>
+                                        <option value="admin">管理员</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row row-margin-bottom">
-                            <label for="userAdminCreate-phone" class="col-sm-2 text-right">电话：</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" id="userAdminCreate-phone">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-phone">电话
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input id="userAdminCreate-phone" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row row-margin-bottom">
-                            <label for="userAdminCreate-title" class="col-sm-2 text-right">职称：</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" id="userAdminCreate-title">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-title">职称
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input id="userAdminCreate-title" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row row-margin-bottom">
-                            <label for="userAdminCreate-phone" class="col-sm-2 text-right">简介：</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control" id="userAdminCreate-introduction"></textarea>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-introduction">简介
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <textarea id="userAdminCreate-introduction" class="form-control col-md-7 col-xs-12"></textarea>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row row-margin-bottom" id="userAdminCreate-createSubmit">
-                            <div class="col-sm-3 col-sm-offset-3">
-                                <input class="form-control btn-primary" type="button" id="userAdminCreate-create" value="添加">
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    <button id="userAdminCreate-create" class="btn btn-success" type="button">提交</button>
+                                    <button class="btn btn-primary" type="reset">重置</button>
+                                </div>
                             </div>
-                        </div>
-
+                        </form>
                     </div>
                 </div>
             </div>

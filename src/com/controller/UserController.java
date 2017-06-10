@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.entity.User;
+import com.exception.PostException;
 import com.service.UserService;
 import com.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserController {
 
     @ResponseBody
 	@RequestMapping(value="/loginPost",produces = "application/json; charset=utf-8")
-	public String login(String userName, String password, HttpSession session) {
+	public String loginPost(String userName, String password, HttpSession session) throws PostException {
 		User user = userService.getUser(userName, password);
 		if (user != null) {
 			session.setAttribute("user", user);

@@ -1,5 +1,0 @@
-teacher的exams需要延迟加载
-
-web/public存放静态文件，不设拦截器
-web/WEB-INF/jsp/root.jsp 登录页面
-web/WEB-INF/jsp/root.jsp 超级管理员管理页面
