@@ -33,6 +33,8 @@ public class UserDao extends GenericDao<User> {
                     root.setUserName("root");
                     root.setPassword("e10adc3949ba59abbe56e057f20f883e");
                     root.setIntroduction("超级管理员");
+                    root.setPhone("18888888888");
+                    root.setEmail("");
                     try {
                         user = insertUser(root);
                     } catch (PostException e1) {
@@ -83,8 +85,8 @@ public class UserDao extends GenericDao<User> {
     @Transactional
 	public User insertUser(User user) throws PostException {
         if(user.getUserName().length()<2 || user.getUserName().length()>10) throw new PostException("用户名长度必须在2~10之间");
-        if(!user.getPhone().matches("\\d+")) throw new PostException("电话号码只能包含数字字符");
         if(user.getPhone().length()<2 || user.getPhone().length()>18) throw new PostException("电话长度必须在2~18之间");
+        if(!user.getPhone().matches("\\d+")) throw new PostException("电话号码只能包含数字字符");
         user.setPassword("e10adc3949ba59abbe56e057f20f883e");
         persist(user);
         refresh(user);
