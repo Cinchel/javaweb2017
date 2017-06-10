@@ -16,6 +16,8 @@ public class BaseController {
 	public void getView() {}
     @GetMapping("/admin/{view}")
     public void getView2() {}
+    @GetMapping("/teacher/{view}")
+    public void getView3() {}
 //	@GetMapping("/{root}/{view}")
 //	public void getView2() {}
 //	@GetMapping("/{root}/{root2}/{view}")
