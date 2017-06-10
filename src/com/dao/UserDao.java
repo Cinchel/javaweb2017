@@ -1,11 +1,7 @@
 package com.dao;
 
-import com.entity.Admin;
 import com.entity.Root;
-import com.entity.Teacher;
 import com.entity.User;
-import com.exception.ExceptionController;
-import com.exception.PostException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
