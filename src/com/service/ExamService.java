@@ -3,7 +3,6 @@ package com.service;
 import com.dao.ExamDao;
 import com.entity.Admin;
 import com.entity.Exam;
-import com.entity.ExamRoom;
 import com.util.Json;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Libby on 2017/6/3.
@@ -29,7 +26,7 @@ public class ExamService {
     private ExamDao examDao;
 
     //基于名称查询
-    public  Exam getExam(String name){
+    public Exam getExam(String name){
         return examDao.find(name);
     }
 

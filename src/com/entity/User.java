@@ -29,13 +29,13 @@ public class User {
     @Column(length = 1000)
 	private String introduction;//简介
 	@ManyToMany
-	private Set<ExamRoom> examRooms;
+	private Set<Exam> examRooms;
 
-	public Set<ExamRoom> getExamRooms() {
+	public Set<Exam> getExamRooms() {
 		return examRooms;
 	}
 
-	public void setExamRooms(Set<ExamRoom> examRooms) {
+	public void setExamRooms(Set<Exam> examRooms) {
 		this.examRooms = examRooms;
 	}
 	public int getId() {
