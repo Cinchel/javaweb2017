@@ -35,12 +35,7 @@ public class UserDao extends GenericDao<User> {
                     root.setIntroduction("超级管理员");
                     root.setPhone("18888888888");
                     root.setEmail("");
-                    try {
-                        user = insertUser(root);
-                    } catch (PostException e1) {
-                        user = null;
-                        e1.printStackTrace();
-                    }
+                    user = insertUser(root);
                 }
             }
 		}
@@ -83,10 +78,7 @@ public class UserDao extends GenericDao<User> {
         return list;
     }
     @Transactional
-	public User insertUser(User user) throws PostException {
-        if(user.getUserName().length()<2 || user.getUserName().length()>10) throw new PostException("用户名长度必须在2~10之间");
-        if(user.getPhone().length()<2 || user.getPhone().length()>18) throw new PostException("电话长度必须在2~18之间");
-        if(!user.getPhone().matches("\\d+")) throw new PostException("电话号码只能包含数字字符");
+	public User insertUser(User user) {
         user.setPassword("e10adc3949ba59abbe56e057f20f883e");
         persist(user);
         refresh(user);
@@ -97,58 +89,31 @@ public class UserDao extends GenericDao<User> {
         Query query = getEntityManager().createQuery(jpql);
         return (Long)query.getSingleResult();
     }
-
-    public boolean userDelete(int userId) {
-	    try {
-            String jpql = "DELETE from User u where u.id = :userId and u.userName!='root'";
-            Query query = getEntityManager().createQuery(jpql);
-            query.setParameter("userId", userId);
-            query.executeUpdate();
-        }
-        catch (Exception e){
-	        return false;
-        }
-        return true;
+    public void userDelete(int userId) {
+        String jpql = "DELETE from User u where u.id = :userId and u.userName!='root'";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("userId", userId);
+        query.executeUpdate();
     }
-
     @Transactional
-    public boolean userToggleRole(int userId) {
-        try {
-            User user = findWithoutPassword(userId);
-            if(user==null) return false;
-            String sql;
-            if(user.getClass().toString().equals("class com.entity.Teacher")) {
-                sql = "update user set DTYPE = 'Admin' where id=?";
-            }
-            else if(user.getClass().toString().equals("class com.entity.Admin")) {
-                sql = "update user set DTYPE = 'Teacher' where id=?";
-            }
-            else return false;
-            Query query =  this.getEntityManager().createNativeQuery(sql);
-            query.setParameter(1,userId);
-            query.executeUpdate();
+    public void userToggleRole(int userId) {
+        User user = findWithoutPassword(userId);
+        String sql = "";
+        if(user.getClass().toString().equals("class com.entity.Teacher")) {
+            sql = "update user set DTYPE = 'Admin' where id=?";
         }
-        catch (Exception e) {
-            System.out.println(e);
-            return false;
+        else if(user.getClass().toString().equals("class com.entity.Admin")) {
+            sql = "update user set DTYPE = 'Teacher' where id=?";
         }
-        return true;
+        Query query =  this.getEntityManager().createNativeQuery(sql);
+        query.setParameter(1,userId);
+        query.executeUpdate();
     }
-
-    public boolean userModify(int pk, String name, String value) {
-        try {
-            User user = findWithoutPassword(pk);
-            if(user==null) return false;
-            String sql = "update user set "+name+" = ? where id=?";
-            Query query =  this.getEntityManager().createNativeQuery(sql);
-            query.setParameter(1,value);
-            query.setParameter(2,pk);
-            query.executeUpdate();
-        }
-        catch (Exception e) {
-            System.out.println(e);
-            return false;
-        }
-        return true;
+    public void userModify(int pk, String name, String value) {
+        String sql = "update user set "+name+" = ? where id=?";
+        Query query =  this.getEntityManager().createNativeQuery(sql);
+        query.setParameter(1,value);
+        query.setParameter(2,pk);
+        query.executeUpdate();
     }
 }

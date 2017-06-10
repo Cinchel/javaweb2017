@@ -37,86 +37,53 @@ public class AdminPostController {
         if(exam!=null) return Json.writeStatus(1,"添加成功");
         else return Json.writeStatus(0,"添加失败，未知错误");
     }
-
-
     @ResponseBody
     @RequestMapping(value="/examDelete",produces = "application/json; charset=utf-8")
     public String examDelete(int examId) {
-        if(examService.examDelete(examId)) return Json.writeStatus(1,"");
-        else return Json.writeStatus(0,"");
+        examService.examDelete(examId);
+        return Json.writeStatus(1,"");
     }
-
     @ResponseBody
     @RequestMapping(value="/examListPost",produces = "application/json; charset=utf-8")
     public String examList(int offset,int limit) {
         System.out.print("我是control哈哈哈");
         return examService.examList(offset, limit);
     }
-
-
-
     @ResponseBody
     @RequestMapping(value="/editInvigilation",produces = "application/text; charset=utf-8")
-    public String examEdit(int id, String name, String value, HttpServletResponse response) {
+    public void examEdit(int id, String name, String value, HttpServletResponse response) throws PostException {
         System.out.print("id"+"   "+" 控制的列名"+name+"获取的值"+value);
-        String res = examService.examEdit(id, name, value);
-        if(!res.equals("")) response.setStatus(500);
-        return res;
+        examService.examEdit(id, name, value);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //用户
     @Autowired
     private UserService userService;
-
     @ResponseBody
     @RequestMapping(value="/userAdminEdit",produces = "application/text; charset=utf-8")
-    public String userAdminEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
-        String res = userService.userAdminEdit(pk, name, value);
-        if(!res.equals("")) response.setStatus(500);
-        return res;
+    public void userAdminEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
+        userService.userAdminEdit(pk, name, value);
     }
-
     @ResponseBody
     @RequestMapping(value="/usersListPost",produces = "application/json; charset=utf-8")
     public String usersList(int offset,int limit) {
         return userService.usersList(offset,limit);
     }
-
     @ResponseBody
     @RequestMapping(value="/userToggleRole",produces = "application/json; charset=utf-8")
-    public String userToggleRole(int userId) {
-        if(userService.userToggleRole(userId)) return Json.writeStatus(1,"");
-        else return Json.writeStatus(0,"");
+    public String userToggleRole(int userId) throws PostException {
+        userService.userToggleRole(userId);
+        return Json.writeStatus(1,"");
     }
-
     @ResponseBody
     @RequestMapping(value="/userDelete",produces = "application/json; charset=utf-8")
     public String userDelete(int userId) {
-        if(userService.userDelete(userId)) return Json.writeStatus(1,"");
-        else return Json.writeStatus(0,"");
+        userService.userDelete(userId);
+        return Json.writeStatus(1,"");
     }
-
-
     @ResponseBody
     @RequestMapping(value="/addUser",produces = "application/json; charset=utf-8")
     public String addUser(String userName, String title, String introduction, String phone, String role) throws PostException {
-        User user = userService.getUserWithoutPassword(userName);
-        if(user!=null) return Json.writeStatus(0,"添加失败，该用户已存在！");
-        user = userService.insertUser(userName,title,introduction,phone,role);
-        if(user!=null) return Json.writeStatus(1,"添加成功");
-        else return Json.writeStatus(0,"添加失败，未知错误");
+        userService.insertUser(userName,title,introduction,phone,role);
+        return Json.writeStatus(1,"添加成功");
     }
 }

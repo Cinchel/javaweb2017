@@ -3,6 +3,7 @@ package com.service;
 import com.dao.ExamDao;
 import com.entity.Admin;
 import com.entity.Exam;
+import com.exception.PostException;
 import com.util.Json;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class ExamService {
     }
 
     //删除
-    public boolean examDelete(int examId) {
-        return examDao.ExamDelete(examId);
+    public void examDelete(int examId) {
+        examDao.ExamDelete(examId);
     }
 
     //获取所有数据
@@ -60,21 +61,23 @@ public class ExamService {
         return Json.writeTableList(examDao.ExamCount(), list2);
     }
     //修改
-    public String examEdit(int pk,String name,String value) {
+    public void examEdit(int pk,String name,String value) throws PostException {
         System.out.println("要修改的列"+name);
-        if(name.equals("name")) {
-            Exam exam = examDao.find(value);
-            if(exam!=null) return "该监考已存在！";
-        }
-        else if(name.equals("date")) {
+        switch (name) {
+            case "name":
+                Exam exam = examDao.find(value);
+                if (exam != null) throw new PostException("考试不存在");
+                break;
+            case "date":
 
-        }
-        else if(name.equals("introduction")) {
+                break;
+            case "introduction":
 
+                break;
+            default:
+                throw new PostException("参数错误，未知列");
         }
-        else return "未知列，请输入正确的列名";
-        if(examDao.examModify(pk,name,value)) return "";
-        else return "请输入正确的数据";
+        examDao.examModify(pk,name,value);
     }
 
 }

@@ -36,7 +36,7 @@ public class ExceptionController {
 		if(request.getMethod().equals("POST")) {
 			return Json.writeStatus(0,"服务器出现异常："+e.getMessage());
 		}
-		else {
+		else { //get请求出现异常
             response.setStatus(500);
 			return "服务器出现异常："+e.getMessage();
 		}
@@ -59,8 +59,12 @@ public class ExceptionController {
 	@ResponseBody
 	@RequestMapping(value="/usersListPost",produces = "application/json; charset=utf-8")
 	@ExceptionHandler(PostException.class)
-	public String getPostException(PostException e) {
-		return Json.writeStatus(0,e.getMessage());
-	} 
+	public String getPostException(HttpServletRequest request,HttpServletResponse response,PostException e) {
+	    if(null != request.getParameter("pk")) { //判断请求是否存在pk参数，如果存在，则说明是table修改
+            response.setStatus(500);
+            return e.getMessage();
+        }
+		else return Json.writeStatus(0,e.getMessage());
+	}
 
 }
