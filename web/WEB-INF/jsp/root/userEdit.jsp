@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="header.jsp"/>
+<jsp:include page="head.jsp"/>
 
 
 
@@ -14,18 +14,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Plain Page</h3>
-            </div>
-
-            <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                    </div>
-                </div>
+                <h3>用户编辑</h3>
             </div>
         </div>
 
@@ -35,22 +24,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Plain Page</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Settings 1</a>
-                                    </li>
-                                    <li><a href="#">Settings 2</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a class="close-link"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
+                        <h2>查看/编辑用户</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -74,7 +48,7 @@
         },
         method: 'get',
         idField: 'id',
-        url:'adminPost/usersListPost',
+        url:'post/usersListPost',
         classes: 'table table-striped table-condensed table-hover',
         method: 'get',
         columns: [{
@@ -89,14 +63,14 @@
             align: 'center',
             valign: 'middle',
             editable:true,
-            editableUrl: "adminPost/userAdminEdit"
+            editableUrl: "post/userAdminEdit"
         }, {
             field: 'title',
             title: '职称',
             align: 'center',
             valign: 'middle',
             editable:true,
-            editableUrl: "adminPost/userAdminEdit",
+            editableUrl: "post/userAdminEdit",
             width: '15%'
         }, {
             field: 'phone',
@@ -104,7 +78,7 @@
             align: 'center',
             valign: 'middle',
             editable:true,
-            editableUrl: "adminPost/userAdminEdit"
+            editableUrl: "post/userAdminEdit"
         },{
             field: 'role',
             title: '用户类型',
@@ -117,7 +91,7 @@
             align: 'center',
             valign: 'middle',
             editable:true,
-            editableUrl: "adminPost/userAdminEdit",
+            editableUrl: "post/userAdminEdit",
             editableType: "textarea"
         }, {
             field: 'delete',
@@ -133,7 +107,7 @@
 
     function userAdminEdit_delete(userId) {
         var yes = function() {
-            $.post('rootPost/userDelete', {
+            $.post('post/userDelete', {
                 userId : userId
             }, function (data) {
                 if(data.status == 0) {
@@ -152,7 +126,7 @@
     }
 
     function userAdminEdit_toggleRole(userId) {
-        $.post('rootPost/userToggleRole', {
+        $.post('post/userToggleRole', {
             userId : userId
         }, function (data) {
             if(data.status == 1) userAdminEdit();

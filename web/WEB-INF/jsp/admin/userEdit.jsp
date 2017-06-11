@@ -25,10 +25,6 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>查看/编辑用户</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                        </ul>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -52,7 +48,7 @@
         },
         method: 'get',
         idField: 'id',
-        url:'rootPost/usersListPost',
+        url:'post/usersListPost',
         classes: 'table table-striped table-condensed table-hover',
         method: 'get',
         columns: [{
@@ -67,14 +63,14 @@
             align: 'center',
             valign: 'middle',
             editable:true,
-            editableUrl: "rootPost/userAdminEdit"
+            editableUrl: "post/userAdminEdit"
         }, {
             field: 'title',
             title: '职称',
             align: 'center',
             valign: 'middle',
             editable:true,
-            editableUrl: "rootPost/userAdminEdit",
+            editableUrl: "post/userAdminEdit",
             width: '15%'
         }, {
             field: 'phone',
@@ -82,7 +78,7 @@
             align: 'center',
             valign: 'middle',
             editable:true,
-            editableUrl: "rootPost/userAdminEdit"
+            editableUrl: "post/userAdminEdit"
         },{
             field: 'role',
             title: '用户类型',
@@ -95,7 +91,7 @@
             align: 'center',
             valign: 'middle',
             editable:true,
-            editableUrl: "rootPost/userAdminEdit",
+            editableUrl: "post/userAdminEdit",
             editableType: "textarea"
         }, {
             field: 'delete',
@@ -111,7 +107,7 @@
 
     function userAdminEdit_delete(userId) {
         var yes = function() {
-            $.post('rootPost/userDelete', {
+            $.post('post/userDelete', {
                 userId : userId
             }, function (data) {
                 if(data.status == 0) {
@@ -130,7 +126,7 @@
     }
 
     function userAdminEdit_toggleRole(userId) {
-        $.post('rootPost/userToggleRole', {
+        $.post('post/userToggleRole', {
             userId : userId
         }, function (data) {
             if(data.status == 1) userAdminEdit();

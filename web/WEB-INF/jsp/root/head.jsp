@@ -130,7 +130,7 @@
                             <li><a><i class="fa fa-user"></i> 用户编辑 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li><a href="userAdd">添加用户</a></li>
-                                    <li><a href="userAdminEdit">查看／编辑用户</a></li>
+                                    <li><a href="userEdit">查看／编辑用户</a></li>
                                 </ul>
                             </li>
 

@@ -68,7 +68,7 @@
                             <div class="form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                     <button id="userAdminCreate-create" class="btn btn-success col-sm-4" type="button">提交</button>
-                                    <button class="btn btn-primary col-sm-4 col-sm-offset-1" type="reset">重置</button>
+                                    <button class="btn btn-primary  col-sm-4 col-sm-offset-1" type="reset">重置</button>
                                 </div>
                             </div>
                         </form>

@@ -16,7 +16,17 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		if (user != null) {
-			return true;
+		    String URI = request.getRequestURI();
+            if(URI.matches("/root/.*")) {
+                if(user.getClass().toString().equals("class com.entity.Root")) return true;
+                System.out.println(user.getClass().toString());
+            }
+            else if(URI.matches("/admin/.*")){
+                if(user.getClass().toString().equals("class com.entity.Admin")) return true;
+            }
+            else if(URI.matches("/teacher/.*")){
+                if(user.getClass().toString().equals("class com.entity.Teacher")) return true;
+            }
 		}
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()

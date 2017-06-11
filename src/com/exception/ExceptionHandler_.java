@@ -33,8 +33,14 @@ public class ExceptionHandler_ {
 			HttpServletRequest request,
 			HttpServletResponse response,
 			Exception e) {
+        e.printStackTrace();
 		if(request.getMethod().equals("POST")) {
-			return Json.writeStatus(0,"服务器出现异常："+e.getMessage());
+            if(null != request.getParameter("pk")) { //判断请求是否存在pk参数，如果存在，则说明是table修改
+                response.setStatus(500);
+                return e.getMessage();
+            }
+			else
+			    return Json.writeStatus(0,"服务器出现异常："+e.getMessage());
 		}
 		else { //get请求出现异常
             response.setStatus(500);

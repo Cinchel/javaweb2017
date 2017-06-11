@@ -5,12 +5,17 @@ import com.entity.Admin;
 import com.entity.Exam;
 import com.exception.PostException;
 import com.util.Json;
+import javafx.geometry.Pos;
+import org.hibernate.exception.DataException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,21 +25,12 @@ import java.util.List;
 @Service
 @Transactional
 public class ExamService {
-
-
-
     @Autowired
     private ExamDao examDao;
 
-    //基于名称查询
-    public Exam getExam(String name){
-        return examDao.find(name);
-    }
-
     //插入
-    public Exam insetExam(String name, java.sql.Date date, Time startTime, Time endTime, Admin createAdmin){
-      System.out.print("service被执行");
-      return examDao.insertExam(name,date,startTime,endTime,createAdmin);
+    public Exam insetExam(String name, String room, String date, Time startTime, Time endTime, Admin createAdmin){
+        return examDao.insertExam(name,room,date,startTime,endTime,createAdmin);
     }
 
     //删除
@@ -51,33 +47,49 @@ public class ExamService {
             obj.put("id",exam.getId());
             obj.put("name",exam.getName());
             obj.put("date",exam.getDate());
+            obj.put("room",exam.getRoom());
             obj.put("startTime",exam.getStartTime());
             obj.put("endTime",exam.getEndTime());
             obj.put("createAdmin",exam.getCreateAdmin().getUserName());
             obj.put("delete","<button class='btn btn-danger' onclick='examEdit_delete("+exam.getId()+")'>删除</button>");
-            System.out.print("我是service哈哈哈");
             list2.add(obj);
         }
         return Json.writeTableList(examDao.ExamCount(), list2);
     }
     //修改
     public void examEdit(int pk,String name,String value) throws PostException {
-        System.out.println("要修改的列"+name);
+        System.out.println("要修改的列" + name);
+        Exam exam = examDao.find(pk);
+        if (exam == null) throw new PostException("考试不存在");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setLenient(false);
         switch (name) {
             case "name":
-                Exam exam = examDao.find(value);
-                if (exam != null) throw new PostException("考试不存在");
+                if (value.length() > 50) throw new PostException("考试名称长度不能超过50");
                 break;
             case "date":
-
+                if(!value.matches("[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}")) throw new PostException("请输入正确的日期格式");
+                try {
+                    sdf.parse(value + " 00:00:00");
+                } catch (ParseException e) {
+                    throw new PostException("请输入正确的日期格式");
+                }
                 break;
-            case "introduction":
-
+            case "startTime":
+            case "endTime":
+                if(!value.matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}")) throw new PostException("请输入正确的时间格式");
+                try {
+                    sdf.parse("2017-01-01 " + value);
+                } catch (ParseException e) {
+                    throw new PostException("请输入正确的时间格式");
+                }
+                break;
+            case "room":
+                if (value.length() > 50) throw new PostException("考试地点长度不能超过50");
                 break;
             default:
                 throw new PostException("参数错误，未知列");
         }
-        examDao.examModify(pk,name,value);
+        examDao.examModify(pk, name, value);
     }
-
 }

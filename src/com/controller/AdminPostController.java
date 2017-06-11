@@ -21,19 +21,19 @@ import java.sql.Time;
  * Created by libby on 2017/6/3.
  */
 @Controller
-@RequestMapping("/admin/adminPost")
+@RequestMapping("/admin/post")
 public class AdminPostController {
     @Autowired
     private ExamService examService;
     @ResponseBody
     @RequestMapping(value="/addInvigilation",produces = "application/json; charset=utf-8")
-    public String addInvigilation(String name, java.sql.Date date, Time startTime, Time endTime,HttpSession session) {
+    public String addInvigilation(String name,String room, String date, Time startTime, Time endTime,HttpSession session) {
         Admin createAdmin=(Admin)session.getAttribute("user");
         System.out.print(name+"  "+date+"  "+startTime+"  "+endTime);
         System.out.print("sesssion中的对象"+createAdmin.getUserName()+"  ");
         Exam exam=null;
         if(exam!=null) return Json.writeStatus(0,"添加失败，该考试已存在！");
-        exam=examService.insetExam(name,date,startTime,endTime,createAdmin);
+        exam=examService.insetExam(name,room,date,startTime,endTime,createAdmin);
         if(exam!=null) return Json.writeStatus(1,"添加成功");
         else return Json.writeStatus(0,"添加失败，未知错误");
     }
@@ -51,9 +51,9 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/editInvigilation",produces = "application/text; charset=utf-8")
-    public void examEdit(int id, String name, String value, HttpServletResponse response) throws PostException {
+    public void examEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
         System.out.print("id"+"   "+" 控制的列名"+name+"获取的值"+value);
-        examService.examEdit(id, name, value);
+        examService.examEdit(pk, name, value);
     }
     //用户
     @Autowired

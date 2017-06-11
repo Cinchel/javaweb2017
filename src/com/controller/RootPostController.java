@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/root/rootPost")
+@RequestMapping("/root/post")
 public class RootPostController {
 	@Autowired
 	private UserService userService;

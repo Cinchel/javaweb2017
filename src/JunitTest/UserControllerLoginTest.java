@@ -52,7 +52,7 @@ public class UserControllerLoginTest {
     public void addUser() throws Exception {
 //      {"message":"添加成功","status":1}  {"message":"添加失败，用户已存在！","status":0}
         RequestBuilder builder = MockMvcRequestBuilders
-                .post("/rootPost/userAdminToggleRole")
+                .post("/post/userAdminToggleRole")
                 .param("userId", "2")
 //                .param("title","教授")
 //                .param("introduction","我就是张猛治，哈哈")
@@ -67,7 +67,7 @@ public class UserControllerLoginTest {
 	public void getUsersList() throws Exception {
 //	    {"total":2,"rows":[{"role":"teacher","id":2,"userName":"张猛治4","title":"教授","introduction":"我就是张猛治，哈哈"},{"role":"teacher","phone":"15545016598","id":3,"userName":"张猛治5","title":"教授","introduction":"我就是张猛治，哈哈"}]}
 		RequestBuilder builder = MockMvcRequestBuilders
-				.post("/rootPost/usersListPost?offset=0&limit=2")
+				.post("/post/usersListPost?offset=0&limit=2")
 				//.param("offset", "0") //从第offset条开始，抓取limit条数据，即抓取第offset条 到 offset+limit-1 结束
                 //.param("limit","10")
                 .session(session);

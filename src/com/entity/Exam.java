@@ -3,9 +3,9 @@ package com.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
-import java.util.Set;
+
 
 @Entity
 public class Exam {
@@ -14,7 +14,7 @@ public class Exam {
 	private int id;
 	private String name;//考试名称
     private String room;//考试地点
-    private java.sql.Date date;//考试日期
+    private Date date;//考试日期
     private Time startTime;//开始时间
     private Time endTime;//结束时间
     @ManyToOne
@@ -43,10 +43,10 @@ public class Exam {
     public void setCreateAdmin(Admin createAdmin) {
         this.createAdmin = createAdmin;
     }
-    public java.sql.Date getDate() {
+    public Date getDate() {
         return date;
     }
-    public void setDate(java.sql.Date date) {
+    public void setDate(Date date) {
         this.date = date;
     }
     public Time getStartTime() {

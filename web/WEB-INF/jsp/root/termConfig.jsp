@@ -26,10 +26,6 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>设置学期基点</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                        </ul>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -71,7 +67,7 @@ function refresh() {
     obj = str.split(" - ");
     $('#term-base').datetimepicker('setStartDate', obj[0]+'-01-01');
     $('#term-base').datetimepicker('setEndDate', obj[1]+'-12-31');
-    $.post('rootPost/getTermConfig', {
+    $.post('post/getTermConfig', {
         term: str
     }, function (result) {
         $('#term-base').val(result);
@@ -79,7 +75,7 @@ function refresh() {
 }
 $(function() {
     $("#save").click(function(){
-        $.post('rootPost/setTermConfig', {
+        $.post('post/setTermConfig', {
             term: $("#term-select").val(),
             baseDate: $("#term-base").val()
         }, function (result) {
@@ -95,7 +91,6 @@ $(function() {
         startView: 2,
         minView: 2,
         forceParse: 0,
-        showMeridian: 1,
         initialDate: new Date()
     });
     $('#term-base').datetimepicker('setDaysOfWeekDisabled', [0,2,3,4,5,6]);

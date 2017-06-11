@@ -7,7 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.sql.Date;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -18,7 +21,7 @@ import java.util.List;
 public class ExamDao extends GenericDao<Exam>{
     //分页查询
     public List<Exam> examList(int offset, int limit) {
-        String jpql = "SELECT e from Exam as e  order by e.name";
+        String jpql = "SELECT e from Exam as e  order by e.id desc";
         Query query = getEntityManager().createQuery(jpql);
 
         List<Exam> list = query
@@ -28,10 +31,16 @@ public class ExamDao extends GenericDao<Exam>{
         return list;
     }
     @Transactional
-    public Exam insertExam(String name, java.sql.Date date, Time startTime, Time endTime, Admin createAdmin) {
+    public Exam insertExam(String name, String room, String date, Time startTime, Time endTime, Admin createAdmin) {
         Exam exam1 = new Exam();
+        exam1.setRoom(room);
         exam1.setName(name);
-        exam1.setDate(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            exam1.setDate(new Date(sdf.parse(date).getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         exam1.setStartTime(startTime);
         exam1.setEndTime(endTime);
         exam1.setCreateAdmin(createAdmin);
@@ -39,21 +48,6 @@ public class ExamDao extends GenericDao<Exam>{
         refresh(exam1);
         return exam1;
     }
-   //查询考试
-    public Exam find(String name){
-       String jpql = "FROM Exam e WHERE e.name=:name";
-       Query query = getEntityManager().createQuery(jpql);
-       query.setParameter("name", name);
-       Exam exam = null;
-       try {
-           exam = (Exam) query.getSingleResult();
-       } catch (NoResultException e) {
-           exam = null;
-       }
-       exam = (Exam) query.getSingleResult();
-
-       return exam;
-   }
     public Exam find(int id){
         String jpql = "FROM Exam e WHERE e.id=:id";
         Query query = getEntityManager().createQuery(jpql);
@@ -64,8 +58,6 @@ public class ExamDao extends GenericDao<Exam>{
         } catch (NoResultException e) {
             exam = null;
         }
-        exam = (Exam) query.getSingleResult();
-
         return exam;
     }
     //获取全部考试总数
@@ -76,6 +68,7 @@ public class ExamDao extends GenericDao<Exam>{
 
     }
     //删除考试
+    @Transactional
     public void ExamDelete(int id) {
         String jpql = "DELETE from Exam e where e.id = :id ";
         Query query = getEntityManager().createQuery(jpql);
@@ -83,6 +76,7 @@ public class ExamDao extends GenericDao<Exam>{
         query.executeUpdate();
     }
     //修改
+    @Transactional
     public void examModify(int id, String name, String value) {
         //System.out.print(id+"  列名"+name+"  值"+value);
         String sql = "update exam set "+name+" = ? where id=?";
