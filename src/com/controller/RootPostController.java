@@ -67,7 +67,7 @@ public class RootPostController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/setTermConfig")
+    @RequestMapping(value="/setTermConfig",produces = "application/json; charset=utf-8")
     public String setTermConfig(String term, String baseDate) throws IOException {
         termService.setTermConfig(term,baseDate);
         return Json.writeStatus(1,"保存成功");
