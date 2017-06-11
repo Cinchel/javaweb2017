@@ -46,13 +46,11 @@ public class AdminPostController {
     @ResponseBody
     @RequestMapping(value="/examListPost",produces = "application/json; charset=utf-8")
     public String examList(int offset,int limit) {
-        System.out.print("我是control哈哈哈");
         return examService.examList(offset, limit);
     }
     @ResponseBody
     @RequestMapping(value="/editInvigilation",produces = "application/text; charset=utf-8")
     public void examEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
-        System.out.print("id"+"   "+" 控制的列名"+name+"获取的值"+value);
         examService.examEdit(pk, name, value);
     }
     //用户
