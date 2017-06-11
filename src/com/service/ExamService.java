@@ -36,8 +36,8 @@ public class ExamService {
     @Autowired
     private UserDao userDao;
     //插入
-    public void insetExam(String name, String room, String date, Time startTime, Time endTime, Admin createAdmin) {
-        examDao.insertExam(name,room,date,startTime,endTime,createAdmin);
+    public void insetExam(String name, String room, String date, Time startTime, Time endTime,int number, Admin createAdmin) {
+        examDao.insertExam(name,room,date,startTime,endTime,number,createAdmin);
     }
 
     //删除
@@ -57,6 +57,7 @@ public class ExamService {
             obj.put("room",exam.getRoom());
             obj.put("startTime",exam.getStartTime());
             obj.put("endTime",exam.getEndTime());
+            obj.put("number",exam.getNumber());
             obj.put("createAdmin",exam.getCreateAdmin().getUserName());
             obj.put("operation","<button class='btn btn-primary' onclick=\"chooseTeacher(" + exam.getId() + ",'选择监考教师："+exam.getName()+"')\"><i class=\"fa fa-user\"></i>&nbsp;选择监考老师</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='examEdit_delete("+exam.getId()+")'>删除考试</button>");
             Set<ExamTeacher> li = exam.getExamTeacher();
@@ -79,6 +80,9 @@ public class ExamService {
         switch (name) {
             case "name":
                 if (value.length() > 50) throw new PostException("考试名称长度不能超过50");
+                break;
+            case "number":
+                if(!value.matches("[0-9]{1,4}")) throw  new PostException("请输入合理的数字");
                 break;
             case "date":
                 if(!value.matches("[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}")) throw new PostException("请输入正确的日期格式");
@@ -129,12 +133,16 @@ public class ExamService {
         return list2.toString();
     }
 
-    public void modifyExamTeachers(int examId, JSONArray teachers) {
-        examDao.examRemoveAllTeacher(examId);
+    public void modifyExamTeachers(int examId, JSONArray teachers) throws PostException {
         int len = teachers.length();
+        int number=examDao.find(examId).getNumber();
+        if(len>number) throw new PostException("监考人数超出限制");
+        examDao.examRemoveAllTeacher(examId);
+
         for(int i=0;i<len;i++) {
             int userId = (int)teachers.getJSONObject(i).get("id");
             examDao.examAddTeacher(examId,userId);
         }
+
     }
 }

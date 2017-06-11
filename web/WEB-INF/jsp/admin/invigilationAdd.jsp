@@ -36,6 +36,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">监考人数</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control" type="text" id="number" >
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date">监考日期</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input class="form-control" type="text" id="date" readonly>
@@ -163,7 +169,8 @@
                 date: $('#date').val(),
                 room: $('#Roomname').val(),
                 startTime: $('#startTime').val(),
-                endTime: $('#endTime').val()
+                endTime: $('#endTime').val(),
+                number:$('#number').val()
             }, function (result) {
                 if (result.status == 1) {
                     $('#errorAlert-content').html(result.message);

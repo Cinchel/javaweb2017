@@ -32,4 +32,6 @@ public class UserController {
 			return Json.writeStatus(0,"用户名或密码错误");
 		}
 	}
+
 }
+

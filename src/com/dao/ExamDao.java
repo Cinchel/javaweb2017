@@ -39,7 +39,7 @@ public class ExamDao extends GenericDao<Exam>{
         return list;
     }
     @Transactional
-    public Exam insertExam(String name, String room, String date, Time startTime, Time endTime, Admin createAdmin) {
+    public Exam insertExam(String name, String room, String date, Time startTime, Time endTime,int number, Admin createAdmin) {
         Exam exam1 = new Exam();
         exam1.setRoom(room);
         exam1.setName(name);
@@ -51,6 +51,7 @@ public class ExamDao extends GenericDao<Exam>{
         }
         exam1.setStartTime(startTime);
         exam1.setEndTime(endTime);
+        exam1.setNumber(number);
         exam1.setCreateAdmin(createAdmin);
         persist(exam1);
         refresh(exam1);

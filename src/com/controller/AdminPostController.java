@@ -30,9 +30,9 @@ public class AdminPostController {
     private ExamService examService;
     @ResponseBody
     @RequestMapping(value="/addInvigilation",produces = "application/json; charset=utf-8")
-    public String addInvigilation(String name,String room, String date, Time startTime, Time endTime,HttpSession session) {
+    public String addInvigilation(String name,String room, String date, Time startTime, Time endTime,int number,HttpSession session) {
         Admin createAdmin=(Admin)session.getAttribute("user");
-        examService.insetExam(name,room,date,startTime,endTime,createAdmin);
+        examService.insetExam(name,room,date,startTime,endTime,number,createAdmin);
         return Json.writeStatus(1,"添加成功");
     }
     @ResponseBody
@@ -42,7 +42,7 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/modifyExamTeachers",produces = "application/json; charset=utf-8")
-    public String modifyExamTeachers(int examId,String teachers) {
+    public String modifyExamTeachers(int examId,String teachers) throws PostException {
         if(teachers.equals("")) teachers="[]";
         JSONArray ja = new JSONArray(teachers);
         examService.modifyExamTeachers(examId,ja);

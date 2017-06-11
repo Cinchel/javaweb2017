@@ -18,10 +18,19 @@ public class Exam {
     private Date date;//考试日期
     private Time startTime;//开始时间
     private Time endTime;//结束时间
+    private int number;
     @ManyToOne
 	private Admin createAdmin;//创建考试的管理员
     @OneToMany(mappedBy = "exam")
     private Set<ExamTeacher> examTeacher;
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
     public Set<ExamTeacher> getExamTeacher() {
         return examTeacher;

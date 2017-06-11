@@ -113,6 +113,13 @@
                 editable: true,
                 editableUrl: "post/editInvigilation"
             }, {
+                field: 'number',
+                title: '监考人数',
+                align: 'center',
+                valign: 'middle',
+                editable: true,
+                editableUrl: "post/editInvigilation"
+            }, {
                 field: 'date',
                 title: '日期',
                 align: 'center',
@@ -209,7 +216,7 @@
                 examId: ChooseExamId,
                 teachers: $('#teacherAdd-modal-itemTemptList').bootstrapTable('getAllSelections').length == 0 ? '' : JSON.stringify($('#teacherAdd-modal-itemTemptList').bootstrapTable('getAllSelections')),
             }, function (result) {
-                if (result.status === 1) {
+                if (result.status == 1) {
                     examEdit();
                 } else {
                     $('#AlertP').html(result.message);
@@ -225,7 +232,7 @@
             $.post('post/examDelete', {
                 examId: examId
             }, function (data) {
-                if (data.status === 0) {
+                if (data.status == 0) {
                     $('#errorAlert-content').html("删除失败：" + data.message);
                     $('#errorAlert').modal('show');
                 }
