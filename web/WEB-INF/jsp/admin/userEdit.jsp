@@ -50,7 +50,6 @@
         idField: 'id',
         url:'post/usersListPost',
         classes: 'table table-striped table-condensed table-hover',
-        method: 'get',
         columns: [{
             field: 'id',
             title: 'ID',

@@ -13,14 +13,6 @@ public class User {
 	private String userName;
     @Column(nullable = false, length = 40)
 	private String password;
-	/*
-	role表示用户角色，分别有'root'，'admin'，'teacher'三种角色
-	root(超级管理员): 设置学期基点时间，即学期第一周周日的日期(保存在 properties)
-	admin(管理员/专业主任): 添加用户;修改指定用户信息
-	teacher(教师用户):
-	 */
-	/*private String role;*/
-
     @Column(length = 20)
 	private String phone;//电话号码
 	private String email;//电子邮件
@@ -28,15 +20,15 @@ public class User {
 	private String title;//职称
     @Column(length = 1000)
 	private String introduction;//简介
-	@ManyToMany
-	private Set<Exam> exam;
+	@OneToMany(mappedBy = "teacher")
+	private Set<ExamTeacher> teacherExam;
 
-	public Set<Exam> getExam() {
-		return exam;
+	public Set<ExamTeacher> getTeacherExam() {
+		return teacherExam;
 	}
 
-	public void setExam(Set<Exam> exam) {
-		this.exam = exam;
+	public void setTeacherExam(Set<ExamTeacher> teacherExam) {
+		this.teacherExam = teacherExam;
 	}
 
 	public int getId() {

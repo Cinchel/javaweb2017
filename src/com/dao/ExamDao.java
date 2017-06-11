@@ -2,6 +2,9 @@ package com.dao;
 
 import com.entity.Admin;
 import com.entity.Exam;
+import com.entity.ExamTeacher;
+import com.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,15 +22,20 @@ import java.util.List;
 
 @Repository
 public class ExamDao extends GenericDao<Exam>{
-    //分页查询
+    @Autowired
+    private UserDao userDao;
+
     public List<Exam> examList(int offset, int limit) {
         String jpql = "SELECT e from Exam as e  order by e.id desc";
         Query query = getEntityManager().createQuery(jpql);
-
-        List<Exam> list = query
-                .setFirstResult(offset)
-                .setMaxResults(limit)
-                .getResultList();
+        List<Exam> list;
+        if(limit>0) {
+            list = query
+                    .setFirstResult(offset)
+                    .setMaxResults(limit)
+                    .getResultList();
+        }
+        else list = query.getResultList();
         return list;
     }
     @Transactional
@@ -83,6 +91,34 @@ public class ExamDao extends GenericDao<Exam>{
         Query query =  this.getEntityManager().createNativeQuery(sql);
         query.setParameter(1,value);
         query.setParameter(2,id);
+        query.executeUpdate();
+    }
+    @Transactional
+    public void examAddTeacher(int examId,int userId) {
+//        Exam exam = find(examId);
+//        User user = userDao.findWithoutPassword(userId);
+//        ExamTeacher examTeacher = new ExamTeacher();
+//        examTeacher.setExam(exam);
+//        examTeacher.setTeacher(user);
+        String sql = "insert into examteacher(exam_id,teacher_id) values(?,?)";
+        Query query =  this.getEntityManager().createNativeQuery(sql);
+        query.setParameter(1,examId);
+        query.setParameter(2,userId);
+        query.executeUpdate();
+    }
+    @Transactional
+    public void examRemoveTeacher(int examId,int userId) {
+        String sql = "delete from examteacher where exam_id = ? and userId = ?";
+        Query query =  this.getEntityManager().createNativeQuery(sql);
+        query.setParameter(1,examId);
+        query.setParameter(2,userId);
+        query.executeUpdate();
+    }
+    @Transactional
+    public void examRemoveAllTeacher(int examId) {
+        String sql = "delete from examteacher where exam_id = ?";
+        Query query =  this.getEntityManager().createNativeQuery(sql);
+        query.setParameter(1,examId);
         query.executeUpdate();
     }
 }

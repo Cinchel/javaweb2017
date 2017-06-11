@@ -7,6 +7,8 @@ import com.exception.PostException;
 import com.service.ExamService;
 import com.service.UserService;
 import com.util.Json;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Time;
+import java.util.List;
 
 
 /**
@@ -29,13 +32,21 @@ public class AdminPostController {
     @RequestMapping(value="/addInvigilation",produces = "application/json; charset=utf-8")
     public String addInvigilation(String name,String room, String date, Time startTime, Time endTime,HttpSession session) {
         Admin createAdmin=(Admin)session.getAttribute("user");
-        System.out.print(name+"  "+date+"  "+startTime+"  "+endTime);
-        System.out.print("sesssion中的对象"+createAdmin.getUserName()+"  ");
-        Exam exam=null;
-        if(exam!=null) return Json.writeStatus(0,"添加失败，该考试已存在！");
-        exam=examService.insetExam(name,room,date,startTime,endTime,createAdmin);
-        if(exam!=null) return Json.writeStatus(1,"添加成功");
-        else return Json.writeStatus(0,"添加失败，未知错误");
+        examService.insetExam(name,room,date,startTime,endTime,createAdmin);
+        return Json.writeStatus(1,"添加成功");
+    }
+    @ResponseBody
+    @RequestMapping(value="/invigilationTeacherSelectTableList",produces = "application/json; charset=utf-8")
+    public String invigilationTeacherSelectTableList(int examId) {
+        return examService.invigilationTeacherSelectTableList(examId);
+    }
+    @ResponseBody
+    @RequestMapping(value="/modifyExamTeachers",produces = "application/json; charset=utf-8")
+    public String modifyExamTeachers(int examId,String teachers) {
+        if(teachers.equals("")) teachers="[]";
+        JSONArray ja = new JSONArray(teachers);
+        examService.modifyExamTeachers(examId,ja);
+        return Json.writeStatus(1,"修改成功");
     }
     @ResponseBody
     @RequestMapping(value="/examDelete",produces = "application/json; charset=utf-8")

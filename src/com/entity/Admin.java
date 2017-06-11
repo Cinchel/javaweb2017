@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 public class Admin extends User{
     @OneToMany(mappedBy = "createAdmin")
-    private Set<Exam> exams;
+    private Set<Exam> exams;//该管理员创建的考试
 
     public Set<Exam> getExams() {
         return exams;

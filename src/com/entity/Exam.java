@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Set;
 
 
 @Entity
@@ -19,6 +20,17 @@ public class Exam {
     private Time endTime;//结束时间
     @ManyToOne
 	private Admin createAdmin;//创建考试的管理员
+    @OneToMany(mappedBy = "exam")
+    private Set<ExamTeacher> examTeacher;
+
+    public Set<ExamTeacher> getExamTeacher() {
+        return examTeacher;
+    }
+
+    public void setExamTeacher(Set<ExamTeacher> examTeacher) {
+        this.examTeacher = examTeacher;
+    }
+
     public String getRoom() {
         return room;
     }
@@ -61,4 +73,5 @@ public class Exam {
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
+
 }

@@ -64,13 +64,13 @@ public class UserDao extends GenericDao<User> {
 	public List<User> usersList(int offset, int limit) {
         String jpql = "SELECT u from User as u WHERE u.userName != 'root' order by u.class";
         Query query = getEntityManager().createQuery(jpql);
-
-        //query.setParameter("userName", userName);
-        //query.setParameter("password", password);
-        List<User> list = query
+        List<User> list;
+        if(limit>0)
+            list = query
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
+        else list = query.getResultList();
         return list;
     }
     @Transactional
