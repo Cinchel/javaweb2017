@@ -2,6 +2,8 @@
 <jsp:include page="head.jsp"/>
 <link rel='stylesheet' type='text/css' href='/public/css/bootstrap-datetimepicker.min.css'/>
 <script src='/public/js/bootstrap-datetimepicker.min.js' type='text/javascript'></script>
+<link rel='stylesheet' type='text/css' href='/public/css/fileinput.min.css'/>
+<script src='/public/js/fileinput.min.js' type='text/javascript'></script>
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -62,12 +64,8 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="file">上传文件
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12" >
-                                    <form   id="file" enctype="multipart/form-data">
-                                        <input type="file" name="file"/>
-                                    </form>
-                                    文件名称： ${fileName }<br />
-                                    文件保存位置：${path }  <br />
-                                    文件大小： ${fileSize }<br />
+                                    <input id="file" name="problemEditProblem-uploadData"
+                                           multiple type="file">
                                 </div>
 
                             </div>
@@ -87,7 +85,24 @@
 </div>
 
 <script>
-    $(function(){
+    $(function() {
+        $('#file').fileinput({
+            uploadUrl: 'post/admin/problem/adminProblemUploadFilePost.php', //上传的地址
+            allowedFileExtensions : ['in','out'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCancel: false,
+            showCaption: true,//是否显示标题
+            showPreview: true,
+            showRemove: false,
+            browseClass: "btn btn-primary", //按钮样式
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+        }).on('filebatchpreupload', function (event, data, previewId, index) {
+            data.extra.problem = $('#problemEditProblem-uploadDataProblem').val();
+            data.extra.type = "data";
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            $('#problemEditProblem-uploadData').fileinput('clear').fileinput('enable');
+            $('#problemEditProblem-dataList').bootstrapTable('refresh');
+        });
 
         $("#deadline").datetimepicker({
             format: "yyyy-mm-dd hh:ii:00",
