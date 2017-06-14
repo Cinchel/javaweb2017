@@ -144,7 +144,7 @@
                             <li><a><i class="fa fa-tasks"></i> 任务管理 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li><a href="taskAdd">添加任务</a></li>
-                                    <li><a href="taskEdit">添加任务</a></li>
+                                    <li><a href="taskEdit">查看/编辑任务</a></li>
                                 </ul>
                             </li>
 

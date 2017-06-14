@@ -42,7 +42,7 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/modifyExamTeachers",produces = "application/json; charset=utf-8")
-    public String modifyExamTeachers(int examId,String teachers) throws PostException {
+    public String modifyExamTeachers(int examId,String teachers)  {
         if(teachers.equals("")) teachers="[]";
         JSONArray ja = new JSONArray(teachers);
         examService.modifyExamTeachers(examId,ja);
@@ -61,7 +61,7 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/editInvigilation",produces = "application/text; charset=utf-8")
-    public void examEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
+    public void examEdit(int pk, String name, String value, HttpServletResponse response)  {
         examService.examEdit(pk, name, value);
     }
     //用户
@@ -69,7 +69,7 @@ public class AdminPostController {
     private UserService userService;
     @ResponseBody
     @RequestMapping(value="/userAdminEdit",produces = "application/text; charset=utf-8")
-    public void userAdminEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
+    public void userAdminEdit(int pk, String name, String value, HttpServletResponse response)  {
         userService.userAdminEdit(pk, name, value);
     }
     @ResponseBody
@@ -79,7 +79,7 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/userToggleRole",produces = "application/json; charset=utf-8")
-    public String userToggleRole(int userId) throws PostException {
+    public String userToggleRole(int userId)  {
         userService.userToggleRole(userId);
         return Json.writeStatus(1,"");
     }
@@ -91,7 +91,7 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/addUser",produces = "application/json; charset=utf-8")
-    public String addUser(String userName, String title, String introduction, String phone, String role) throws PostException {
+    public String addUser(String userName, String title, String introduction, String phone, String role)  {
         userService.insertUser(userName,title,introduction,phone,role);
         return Json.writeStatus(1,"添加成功");
     }

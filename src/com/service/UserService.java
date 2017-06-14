@@ -20,7 +20,7 @@ import java.util.List;
 public class UserService {
 	@Autowired
 	private UserDao userDao;
-	public User getUser(String userName, String password) throws PostException {
+	public User getUser(String userName, String password)  {
 		return userDao.find(userName, password);
 	}
 	public String usersList(int offset,int limit) {
@@ -42,7 +42,7 @@ public class UserService {
 		}
 		return Json.writeTableList(userDao.usersCount(), list2);
 	}
-	public void insertUser(String userName, String title, String introduction, String phone, String role) throws PostException {
+	public void insertUser(String userName, String title, String introduction, String phone, String role)  {
 		User user;
 		switch (role) {
 			case "teacher":
@@ -67,11 +67,11 @@ public class UserService {
 	public void userDelete(int userId) {
 		userDao.userDelete(userId);
 	}
-	public void userToggleRole(int userId) throws PostException {
+	public void userToggleRole(int userId)  {
 	    if(null==userDao.findWithoutPassword(userId)) throw new PostException("用户不存在");
 		userDao.userToggleRole(userId);
 	}
-	public void userAdminEdit(int pk,String name,String value) throws PostException {
+	public void userAdminEdit(int pk,String name,String value)  {
 		System.out.println(name);
 		if(name.equals("userName")) {
             if(value.length()<2 || value.length()>10) throw new PostException("用户名长度必须在2~10之间");

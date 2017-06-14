@@ -28,7 +28,7 @@ public class RootPostController {
 
     @ResponseBody
     @RequestMapping(value="/userAdminEdit",produces = "application/text; charset=utf-8")
-    public void userAdminEdit(int pk, String name, String value, HttpServletResponse response) throws PostException {
+    public void userAdminEdit(int pk, String name, String value, HttpServletResponse response)  {
         userService.userAdminEdit(pk, name, value);
     }
 
@@ -40,7 +40,7 @@ public class RootPostController {
 
     @ResponseBody
     @RequestMapping(value="/userToggleRole",produces = "application/json; charset=utf-8")
-    public String userToggleRole(int userId) throws PostException {
+    public String userToggleRole(int userId)  {
         userService.userToggleRole(userId);
         return Json.writeStatus(1,"");
     }
@@ -55,7 +55,7 @@ public class RootPostController {
 
     @ResponseBody
     @RequestMapping(value="/addUser",produces = "application/json; charset=utf-8")
-    public String addUser(String userName, String title, String introduction, String phone, String role) throws PostException {
+    public String addUser(String userName, String title, String introduction, String phone, String role)  {
         userService.insertUser(userName,title,introduction,phone,role);
         return Json.writeStatus(1,"添加成功");
     }

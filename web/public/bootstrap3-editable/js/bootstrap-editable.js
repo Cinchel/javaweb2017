@@ -845,7 +845,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
            //`datetime` should be datetimefield in 'inline' mode
            if(type === 'datetime' && options.mode === 'inline') {
              type = 'datetimefield';  
-           }           
+           }
 
            //change wysihtml5 to textarea for jquery UI and plain versions
            if(type === 'wysihtml5' && !$.fn.editabletypes[type]) {
@@ -861,7 +861,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
            } else {
                $.error('Unknown type: '+ type);
                return false; 
-           }  
+           }
        },
        
        //see http://stackoverflow.com/questions/7264899/detect-css-transitions-using-javascript-and-without-modernizr
@@ -883,7 +883,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                }
            }
            return false;
-       }            
+       }
        
     };      
 }(window.jQuery));
@@ -1387,7 +1387,7 @@ Applied as jQuery method.
         @default 'popup'
         @since 1.4.0        
         **/        
-        mode: 'popup'        
+        mode: 'popup'
     };
 
     /* 

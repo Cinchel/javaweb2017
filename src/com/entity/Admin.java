@@ -11,6 +11,11 @@ import java.util.Set;
 public class Admin extends User{
     @OneToMany(mappedBy = "createAdmin")
     private Set<Exam> exams;//该管理员创建的考试
+    @OneToMany(mappedBy = "createAdmin")
+    private Set<Task> tasks;//该管理员创建的任务
+
+    public Admin() {
+    }
 
     public Set<Exam> getExams() {
         return exams;

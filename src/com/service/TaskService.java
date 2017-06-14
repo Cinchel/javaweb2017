@@ -1,7 +1,7 @@
 package com.service;
 
 import com.entity.FileTask;
-import com.exception.MyException;
+import com.exception.PostException;
 import com.util.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,6 @@ import java.util.List;
 
 @Service
 public class TaskService {
-
-
-
     //文件上传下载
     public static final List<FileTask> files = new ArrayList<>();
     public void addLecture(byte[] bytes,String originalFilename) {
@@ -61,7 +58,7 @@ public class TaskService {
     public void getExecption(String message) {
         try(InputStream stream = new FileInputStream(message)) {
         } catch (IOException e) {
-            throw new MyException("文件读取异常，请重新输入!" + e.getMessage());
+            throw new PostException("文件读取异常，请重新输入!" + e.getMessage());
         }
     }
 

@@ -71,7 +71,7 @@ public class ExamService {
         return Json.writeTableList(examDao.ExamCount(), list2);
     }
     //修改
-    public void examEdit(int pk,String name,String value) throws PostException {
+    public void examEdit(int pk,String name,String value)  {
         System.out.println("要修改的列" + name);
         Exam exam = examDao.find(pk);
         if (exam == null) throw new PostException("考试不存在");
@@ -133,7 +133,7 @@ public class ExamService {
         return list2.toString();
     }
 
-    public void modifyExamTeachers(int examId, JSONArray teachers) throws PostException {
+    public void modifyExamTeachers(int examId, JSONArray teachers)  {
         int len = teachers.length();
         int number=examDao.find(examId).getNumber();
         if(len>number) throw new PostException("监考人数超出限制");

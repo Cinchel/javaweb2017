@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class ExceptionHandler_ {
-
 	/*@ExceptionHandler(RuntimeException.class)
 	public String getMyException(
 			HttpServletRequest request,
@@ -33,7 +32,6 @@ public class ExceptionHandler_ {
 			HttpServletRequest request,
 			HttpServletResponse response,
 			Exception e) {
-        e.printStackTrace();
 		if(request.getMethod().equals("POST")) {
             if(null != request.getParameter("pk")) { //判断请求是否存在pk参数，如果存在，则说明是table修改
                 response.setStatus(500);

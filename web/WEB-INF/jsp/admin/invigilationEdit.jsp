@@ -219,8 +219,8 @@
                 if (result.status == 1) {
                     examEdit();
                 } else {
-                    $('#AlertP').html(result.message);
-                    $('#ErrorAlert').modal('show');
+                    $('#errorAlert-content').html(result.message);
+                    $('#errorAlert').modal('show');
                 }
                 $('#teacherAdd-modal').modal("hide");
             });

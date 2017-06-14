@@ -2,7 +2,7 @@ package com.controller;
 
 import com.entity.Admin;
 import com.entity.FileTask;
-import com.exception.MyException;
+import com.exception.PostException;
 import com.exception.PostException;
 import com.service.TaskService;
 import com.util.FileUtils;
@@ -43,18 +43,6 @@ public class TaskPostController {
         return Json.writeStatus(1,"添加成功");
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     //文件上传
 
     @PostMapping("/fileupload")
@@ -77,7 +65,7 @@ public class TaskPostController {
                 File newFile = new File(directory, file.getOriginalFilename());
                 file.transferTo(newFile);
             } catch (IllegalStateException | IOException e) {
-                throw new MyException("文件上传错误！" + e.getMessage());
+                throw new PostException("文件上传错误！" + e.getMessage());
             }
             System.out.println(fileName);
             System.out.println(fileSize);
@@ -96,7 +84,7 @@ public class TaskPostController {
             try {
                 taskService.addFile(file.getBytes(), file.getOriginalFilename());
             } catch (IOException e) {
-                throw new MyException("上传文件读取错误！" + e.getMessage());
+                throw new PostException("上传文件读取错误！" + e.getMessage());
             }
             redirectAttributes.addFlashAttribute("fileName", file.getOriginalFilename());
             redirectAttributes.addFlashAttribute("fileSize", file.getSize());
@@ -109,7 +97,7 @@ public class TaskPostController {
     }
 
     @PostMapping("/lectureupload")
-    public String download(MultipartFile file) throws PostException {
+    public String download(MultipartFile file)  {
         if (!file.isEmpty()) {
             try {
                 taskService.addLecture(file.getBytes(), file.getOriginalFilename());
@@ -125,7 +113,5 @@ public class TaskPostController {
         FileTask fileTask = taskService.getFileTask(fileid);
         Path path = Paths.get(fileTask.getFileName());
         return FileUtils.toResponseEntity(path);
-
-
     }
 }

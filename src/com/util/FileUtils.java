@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.exception.MyException;
+import com.exception.PostException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +30,7 @@ public class FileUtils {
                 Files.createDirectories(path);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-                throw new MyException("创建上传文件目录错误！" + e.getMessage());
+                throw new PostException("创建上传文件目录错误！" + e.getMessage());
             }
         }
         return uploadDirectory;
@@ -43,7 +43,7 @@ public class FileUtils {
             Files.write(path, bytes);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            throw new MyException("文件写入错误！" + e.getMessage());
+            throw new PostException("文件写入错误！" + e.getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ public class FileUtils {
             return entity;
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            throw new MyException("文件加载错误！" + e.getMessage());
+            throw new PostException("文件加载错误！" + e.getMessage());
         }
     }
 }
