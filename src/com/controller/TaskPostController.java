@@ -35,18 +35,8 @@ public class TaskPostController {
     private TaskService taskService;
     //添加任务
     @ResponseBody
-    @RequestMapping(value="/addTask",produces = "application/json; charset=utf-8")
-    public String addTask(String taskName, String description, HttpSession session) {
-        Admin createAdmin=(Admin)session.getAttribute("user");
-
-        System.out.print("-- "+taskName+"   --"+description+"  --"+"  --"+createAdmin.getUserName());
-        return Json.writeStatus(1,"添加成功");
-    }
-
-    //文件上传
-
-    @PostMapping("/fileupload")
-    public String upload(MultipartFile file, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    @RequestMapping(value="/addFileTask",produces = "application/json; charset=utf-8")
+    public String addFileTask(MultipartFile file, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (!file.isEmpty()) {
             String fileName = null;
             long fileSize = 0;
@@ -73,7 +63,24 @@ public class TaskPostController {
             redirectAttributes.addFlashAttribute("fileName", file.getOriginalFilename());
             redirectAttributes.addFlashAttribute("fileSize", fileSize);
             redirectAttributes.addFlashAttribute("path", path);
+            return Json.writeStatus(1,"添加成功");
         }
+        else return Json.writeStatus(0,"添加失败：文件为空");
+    }
+    @ResponseBody
+    @RequestMapping(value="/addReplyTask",produces = "application/json; charset=utf-8")
+    public String addReplyTask(String taskName, String description, HttpSession session) {
+        Admin createAdmin=(Admin)session.getAttribute("user");
+
+        System.out.print("-- "+taskName+"   --"+description+"  --"+"  --"+createAdmin.getUserName());
+        return Json.writeStatus(1,"添加成功");
+    }
+
+    //文件上传
+
+    @PostMapping("/fileupload")
+    public String upload(MultipartFile file, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
         return "redirect:/admin/post/fileupload";
     }
 

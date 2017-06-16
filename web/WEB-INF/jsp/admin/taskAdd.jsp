@@ -53,18 +53,18 @@
                                     <input id="deadline" class="form-control col-md-7 col-xs-12" type="text">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="replyTask-div">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="replyMessage">回复内容
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12" >
                                     <textarea id="replyMessage" class="form-control col-md-7 col-xs-12"></textarea>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="fileTask-div" hidden>
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="file">上传文件
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12" >
-                                    <input id="file" name="problemEditProblem-uploadData"
+                                    <input id="file" name="file"
                                            multiple type="file">
                                 </div>
 
@@ -86,22 +86,42 @@
 
 <script>
     $(function() {
+        $('#taskType').change(
+            function(){
+                if($('#taskType').val()=='replyTask') {
+                    $('#replyTask-div').show();
+                    $('#fileTask-div').hide();
+                }
+                else if($('#taskType').val()=='fileTask') {
+                    $('#replyTask-div').hide();
+                    $('#fileTask-div').show();
+                }
+            }
+        );
         $('#file').fileinput({
-            uploadUrl: 'post/admin/problem/adminProblemUploadFilePost.php', //上传的地址
-            allowedFileExtensions : ['in','out'],//接收的文件后缀
-            showUpload: true, //是否显示上传按钮
+            uploadUrl: 'post/addFileTask', //上传的地址
+            allowedFileExtensions : ['doc','docx','ppt','pptx','pdf','txt'],//接收的文件后缀
+            showUpload: false, //是否显示上传按钮
             showCancel: false,
             showCaption: true,//是否显示标题
             showPreview: true,
             showRemove: false,
+            maxFileCount: 1,
+            fileActionSettings:{
+                showUpload:false
+            },
+            autoReplace: true,
             browseClass: "btn btn-primary", //按钮样式
             previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
         }).on('filebatchpreupload', function (event, data, previewId, index) {
-            data.extra.problem = $('#problemEditProblem-uploadDataProblem').val();
-            data.extra.type = "data";
+            data.extra.taskName = $('#taskName').val();
+            data.extra.taskType = $('#taskType').val();
+            data.extra.deadline = $('#deadline').val();
+            data.extra.description = $('#description').val();
         }).on('fileuploaded', function (event, data, previewId, index) {
-            $('#problemEditProblem-uploadData').fileinput('clear').fileinput('enable');
-            $('#problemEditProblem-dataList').bootstrapTable('refresh');
+            $('#file').fileinput('clear').fileinput('enable');
+            $('#errorAlert-content').html(data.message);
+            $('#errorAlert').modal('show');
         });
 
         $("#deadline").datetimepicker({
@@ -115,49 +135,54 @@
             forceParse: 0
         });
 
+
         $('#taskAdd').click(function () {
-            if($('#deadline').val().length<1) {
-                $('#errorAlert-content').html("请选择截止时间！");
-                $('#errorAlert').modal('show');
-                return;
+            if($('#taskType').val()=='fileTask') {
+                $('#file').fileinput('upload');
             }
-            else if($('#taskName').val().length<1) {
-                $('#errorAlert-content').html("请输入任务名称！");
-                $('#errorAlert').modal('show');
-                return;
-            }
-            else if($('#description').val().length<1) {
-                $('#errorAlert-content').html("请输入任务描述！");
-                $('#errorAlert').modal('show');
-                return;
-            }
-            $.post('post/addTask', {
-                taskName: $('#taskName').val(),
-                taskType: $('#taskType').val(),
-                deadline: $('#deadline').val(),
-                description: $('#description').val(),
-            }, function (result) {
-                if (result.status == 1) {
-                    $('#errorAlert-content').html(result.message);
-                    $('#errorAlert').modal('show');
-                } else {
-                    $('#errorAlert-content').html(result.message);
-                    $('#errorAlert').modal('show');
-                }
-            });
-            $.post('post/fileupload2', {
-                file:$('#file').val()
-            }, function (result) {
-                if (result.status == 1) {
-                    $('#errorAlert-content').html(result.message);
-                    $('#errorAlert').modal('show');
-                    $('#file').val('')
-                } else {
-                    $('#errorAlert-content').html(result.message);
-                    $('#errorAlert').modal('show');
-                    $('#file').val('')
-                }
-            });
+
+//            if($('#deadline').val().length<1) {
+//                $('#errorAlert-content').html("请选择截止时间！");
+//                $('#errorAlert').modal('show');
+//                return;
+//            }
+//            else if($('#taskName').val().length<1) {
+//                $('#errorAlert-content').html("请输入任务名称！");
+//                $('#errorAlert').modal('show');
+//                return;
+//            }
+//            else if($('#description').val().length<1) {
+//                $('#errorAlert-content').html("请输入任务描述！");
+//                $('#errorAlert').modal('show');
+//                return;
+//            }
+//            $.post('post/addTask', {
+//                taskName: $('#taskName').val(),
+//                taskType: $('#taskType').val(),
+//                deadline: $('#deadline').val(),
+//                description: $('#description').val(),
+//            }, function (result) {
+//                if (result.status == 1) {
+//                    $('#errorAlert-content').html(result.message);
+//                    $('#errorAlert').modal('show');
+//                } else {
+//                    $('#errorAlert-content').html(result.message);
+//                    $('#errorAlert').modal('show');
+//                }
+//            });
+//            $.post('post/fileupload2', {
+//                file:$('#file').val()
+//            }, function (result) {
+//                if (result.status == 1) {
+//                    $('#errorAlert-content').html(result.message);
+//                    $('#errorAlert').modal('show');
+//                    $('#file').val('')
+//                } else {
+//                    $('#errorAlert-content').html(result.message);
+//                    $('#errorAlert').modal('show');
+//                    $('#file').val('')
+//                }
+//            });
         });
     });
 </script>
