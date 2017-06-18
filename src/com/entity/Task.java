@@ -2,6 +2,7 @@ package com.entity;
 
 import javax.persistence.*;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -40,4 +41,5 @@ public class Task {
     public Admin getCreateAdmin2() {return createAdmin;}
 
     public void setCreateAdmin2(Admin createAdmin2) {this.createAdmin = createAdmin2;}
+
 }
