@@ -1,3 +1,6 @@
+#build
 /out/
 javaweb2017.iml
+
+#IntelliJ IDEA
 .idea
