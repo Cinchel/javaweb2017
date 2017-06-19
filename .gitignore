@@ -2,5 +2,8 @@
 /out/
 javaweb2017.iml
 
+#docs
+/docs/
+
 #IntelliJ IDEA
 .idea

@@ -7,8 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-import com.util.Json;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import com.util.JsonUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +37,7 @@ public class ExceptionHandler_ {
                 return e.getMessage();
             }
 			else
-			    return Json.writeStatus(0,"服务器出现异常："+e.getMessage());
+			    return JsonUtils.writeStatus(0,"服务器出现异常："+e.getMessage());
 		}
 		else { //get请求出现异常
             response.setStatus(500);
@@ -68,7 +67,7 @@ public class ExceptionHandler_ {
             response.setStatus(500);
             return e.getMessage();
         }
-		else return Json.writeStatus(0,e.getMessage());
+		else return JsonUtils.writeStatus(0,e.getMessage());
 	}
 
 }

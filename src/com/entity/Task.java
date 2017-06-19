@@ -5,20 +5,17 @@ import javax.persistence.*;
 import java.io.File;
 import java.util.Date;
 
-/**
- * Created by libby on 2017/6/11.
- */
-
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(unique = true, nullable = false, length = 30)
+    @Column(unique = true, nullable = false, length = 70)
     private String taskName;
     private String description;
-    private Date  deadline;
+    private String  deadline;
+    private String replyMessage;
     @ManyToOne
     private Admin createAdmin;//创建任务的管理员
 
@@ -34,9 +31,13 @@ public class Task {
 
     public void setDescription(String description) {this.description = description;}
 
-    public Date getDeadline() {return deadline;}
+    public String getDeadline() {return deadline;}
 
-    public void setDeadline(Date deadline) {this.deadline = deadline;}
+    public void setDeadline(String deadline) {this.deadline = deadline;}
+
+    public String getReplyMessage() {return replyMessage;}
+
+    public void setReplyMessage(String replyMessage) {this.replyMessage = replyMessage;}
 
     public Admin getCreateAdmin2() {return createAdmin;}
 

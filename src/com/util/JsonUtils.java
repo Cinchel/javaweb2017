@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class Json {
+public class JsonUtils {
     public static String writeStatus(int status,String message) {
         JSONObject obj = new JSONObject();
         obj.put("status",status);

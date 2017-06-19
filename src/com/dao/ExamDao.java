@@ -16,10 +16,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-/**
- * Created by libby on 2017/6/3.
- */
-
 @Repository
 public class ExamDao extends GenericDao<Exam>{
     @Autowired

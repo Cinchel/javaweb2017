@@ -5,13 +5,12 @@ import com.entity.Admin;
 import com.entity.Teacher;
 import com.entity.User;
 import com.exception.PostException;
-import com.util.Json;
+import com.util.JsonUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.ws.http.HTTPException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class UserService {
 			obj.put("delete","<button class='btn btn-danger' onclick='userAdminEdit_delete("+user.getId()+")'>删除</button>");
 			list2.add(obj);
 		}
-		return Json.writeTableList(userDao.usersCount(), list2);
+		return JsonUtils.writeTableList(userDao.usersCount(), list2);
 	}
 	public void insertUser(String userName, String title, String introduction, String phone, String role)  {
 		User user;

@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="deadline"  >截止时间
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="deadline" >截止时间
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input id="deadline" class="form-control col-md-7 col-xs-12" type="text">
@@ -120,7 +120,7 @@
             data.extra.description = $('#description').val();
         }).on('fileuploaded', function (event, data, previewId, index) {
             $('#file').fileinput('clear').fileinput('enable');
-            $('#errorAlert-content').html(data.message);
+            $('#errorAlert-content').html(data.response.message);
             $('#errorAlert').modal('show');
         });
 
@@ -137,9 +137,40 @@
 
 
         $('#taskAdd').click(function () {
+            if($('#taskName').val().length<1) {
+                $('#errorAlert-content').html("请输入任务名称！");
+                $('#errorAlert').modal('show');
+                return;
+            }
+            else if($('#description').val().length<1) {
+                $('#errorAlert-content').html("请输入任务描述！");
+                $('#errorAlert').modal('show');
+                return;
+            } else if($('#deadline').val().length < 1) {
+                $('#errorAlert-content').html("请选择截止时间！");
+                $('#errorAlert').modal('show');
+                return;
+            }
+
             if($('#taskType').val()=='fileTask') {
                 $('#file').fileinput('upload');
-            }
+            } /*else if($('#taskType').val()=='replyTask'){
+                $.post('post/addReplyTask', {
+                    taskName: $('#taskName').val(),
+                    //taskType: $('#taskType').val(),
+                    deadline: $('#deadline').val(),
+                    description: $('#description').val(),
+                    replyMessage: $('#replyMessage').val()
+                }, function (result) {
+                    if (result.status == 1) {
+                        $('#errorAlert-content').html(result.message);
+                        $('#errorAlert').modal('show');
+                    } else {
+                        $('#errorAlert-content').html(result.message);
+                        $('#errorAlert').modal('show');
+                    }
+                });
+            }*/
 
 //            if($('#deadline').val().length<1) {
 //                $('#errorAlert-content').html("请选择截止时间！");

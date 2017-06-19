@@ -7,16 +7,13 @@ import com.entity.Exam;
 import com.entity.ExamTeacher;
 import com.entity.User;
 import com.exception.PostException;
-import com.util.Json;
-import javafx.geometry.Pos;
-import org.hibernate.exception.DataException;
+import com.util.JsonUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,9 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Libby on 2017/6/3.
- */
 @Service
 @Transactional
 public class ExamService {
@@ -68,7 +62,7 @@ public class ExamService {
             obj.put("teachers",teachers);
             list2.add(obj);
         }
-        return Json.writeTableList(examDao.ExamCount(), list2);
+        return JsonUtils.writeTableList(examDao.ExamCount(), list2);
     }
     //修改
     public void examEdit(int pk,String name,String value)  {

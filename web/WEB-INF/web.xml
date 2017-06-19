@@ -14,7 +14,7 @@
     <!-- 当不同工程均使用webAppRootKey获取根目录时，使用不同的value避免冲突 -->
     <context-param>
         <param-name>webAppRootKey</param-name>
-        <param-value>SSHExamples.root</param-value>
+        <param-value>web.root</param-value>
     </context-param>
     <servlet>
         <servlet-name>dispatcher</servlet-name>

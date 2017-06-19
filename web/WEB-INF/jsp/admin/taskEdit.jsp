@@ -117,8 +117,8 @@
                 title: '任务类型',
                 align: 'center',
                 valign: 'middle',
-                editable: true,
-                editableUrl: "post/editTask"
+                editable: false,
+                editableUrl: "post/editTask",
             }, {
                 field: 'deadline',
                 title: '截止日期',
@@ -203,9 +203,21 @@
         })
     });
 
+    function downloadTaskFile(taskId) {
+        $.post('post/downloadTaskFile', {
+            taskId: taskId
+        }, function (data) {
+            if (data.status == 0) {
+                $('#errorAlert-content').html("下载失败：" + data.message);
+                $('#errorAlert').modal('show');
+            }
+            else taskEdit();
+        });
+    }
+
     function taskEdit_delete(taskId) {
         var yes = function () {
-            $.post('post/examDelete', {
+            $.post('post/taskDelete', {
                 taskId: taskId
             }, function (data) {
                 if (data.status == 0) {

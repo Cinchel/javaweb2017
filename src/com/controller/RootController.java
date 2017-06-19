@@ -1,20 +1,12 @@
 package com.controller;
 
-import com.entity.User;
-import com.exception.PostException;
 import com.service.TermService;
-import com.service.UserService;
-import com.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import java.util.Calendar;
 
 @Controller
 @Transactional

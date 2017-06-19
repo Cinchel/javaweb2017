@@ -1,24 +1,22 @@
 package com.controller;
 
 import com.entity.Admin;
-import com.entity.Exam;
-import com.entity.User;
 import com.exception.PostException;
 import com.service.ExamService;
 import com.service.TaskService;
 import com.service.UserService;
-import com.util.Json;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
+import com.util.JsonUtils;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,13 +27,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-
-/**
- * Created by libby on 2017/6/3.
- */
 @Controller
 @RequestMapping("/admin/post")
 public class AdminPostController {
@@ -48,7 +46,7 @@ public class AdminPostController {
     public String addInvigilation(String name,String room, String date, Time startTime, Time endTime,int number,HttpSession session) {
         Admin createAdmin=(Admin)session.getAttribute("user");
         examService.insetExam(name,room,date,startTime,endTime,number,createAdmin);
-        return Json.writeStatus(1,"添加成功");
+        return JsonUtils.writeStatus(1,"添加成功");
     }
     @ResponseBody
     @RequestMapping(value="/invigilationTeacherSelectTableList",produces = "application/json; charset=utf-8")
@@ -61,13 +59,13 @@ public class AdminPostController {
         if(teachers.equals("")) teachers="[]";
         JSONArray ja = new JSONArray(teachers);
         examService.modifyExamTeachers(examId,ja);
-        return Json.writeStatus(1,"修改成功");
+        return JsonUtils.writeStatus(1,"修改成功");
     }
     @ResponseBody
     @RequestMapping(value="/examDelete",produces = "application/json; charset=utf-8")
     public String examDelete(int examId) {
         examService.examDelete(examId);
-        return Json.writeStatus(1,"");
+        return JsonUtils.writeStatus(1,"");
     }
     @ResponseBody
     @RequestMapping(value="/examListPost",produces = "application/json; charset=utf-8")
@@ -96,33 +94,135 @@ public class AdminPostController {
     @RequestMapping(value="/userToggleRole",produces = "application/json; charset=utf-8")
     public String userToggleRole(int userId)  {
         userService.userToggleRole(userId);
-        return Json.writeStatus(1,"");
+        return JsonUtils.writeStatus(1,"");
     }
     @ResponseBody
     @RequestMapping(value="/userDelete",produces = "application/json; charset=utf-8")
     public String userDelete(int userId) {
         userService.userDelete(userId);
-        return Json.writeStatus(1,"");
+        return JsonUtils.writeStatus(1,"");
     }
     @ResponseBody
     @RequestMapping(value="/addUser",produces = "application/json; charset=utf-8")
     public String addUser(String userName, String title, String introduction, String phone, String role)  {
         userService.insertUser(userName,title,introduction,phone,role);
-        return Json.writeStatus(1,"添加成功");
+        return JsonUtils.writeStatus(1,"添加成功");
+    }
+    //任务
+    @ResponseBody
+    @RequestMapping(value="/taskListPost",produces = "application/json; charset=utf-8")
+    public String taskList(int offset,int limit) {
+        return taskService.taskList(offset, limit);
+    }
+    @ResponseBody
+    @RequestMapping(value="/editTask",produces = "application/text; charset=utf-8")
+    public void taskEdit(int pk, String name, String value, HttpServletResponse response)  {
+        taskService.taskEdit(pk, name, value);
+    }
+    @ResponseBody
+    @RequestMapping(value="/taskDelete",produces = "application/json; charset=utf-8")
+    public String taskDelete(int taskId){
+        taskService.taskDelete(taskId);
+        return JsonUtils.writeStatus(1,"");
+    }
+    @ResponseBody
+    @RequestMapping(value="/addReplyTask",produces = "application/json; charset=utf-8")
+    public String addReplyTask(String taskName, String deadline, String description, String replyMessage, HttpSession session) throws IOException {
+        Admin createAdmin=(Admin)session.getAttribute("user");
+        taskService.addReplyTask(taskName, deadline, description, replyMessage);
+        return JsonUtils.writeStatus(1,"添加成功");
     }
     @ResponseBody
     @RequestMapping(value="/addFileTask",produces = "application/json; charset=utf-8")
-    public String addFileTask(MultipartFile file, String taskName,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String addFileTask(String taskName, String deadline, String description, MultipartFile file, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
         if (!file.isEmpty()) {
+            //文件信息传至数据库
             CommonsMultipartFile cf= (CommonsMultipartFile)file;
             DiskFileItem fi = (DiskFileItem)cf.getFileItem();
             File f = fi.getStoreLocation();
-            taskService.addTask(taskName,f);
-            return Json.writeStatus(1,"添加成功");
+            taskService.addFileTask(taskName, deadline, description, f);
+
+            //文件名+时间戳 上传至服务器文件夹
+            String fileName = file.getOriginalFilename();
+            String pattern = "(.+)\\.(.+)";
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(fileName);
+            if(m.find()){
+                String name = m.group(1);
+                String fileSufix = m.group(2);
+                fileName = name + String.valueOf(System.currentTimeMillis() + "." + fileSufix);
+            }
+            String path=System.getProperty("web.root") + "WEB-INF/upload/task/" + fileName;
+            File serviceFile=new File(path);
+            if (!serviceFile.exists())
+                serviceFile.mkdirs();
+            file.transferTo(serviceFile);
+            return JsonUtils.writeStatus(1,"添加成功");
         }
-        else return Json.writeStatus(0,"添加失败：文件为空");
+        else return JsonUtils.writeStatus(0,"添加失败：文件为空");
     }
+    /*@ResponseBody
     @RequestMapping(value="/downloadTaskFile",produces = "application/json; charset=utf-8")
+    public String downloadTaskFile(int taskId, HttpServletResponse response,HttpServletRequest request) throws IOException  {
+        String fileName = "开发规范1497853783351.txt";
+        String path = System.getProperty("web.root") + "WEB-INF/upload/task/" + fileName;
+        File file = new File(path);
+        System.out.print(path);
+        //判断文件是否存在
+        if(file.exists()) {
+            //判断文件类型
+            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+            if(mimeType == null) {
+                mimeType = "application/octet-stream";
+            }
+            response.setContentType(mimeType);
+
+            //设置文件响应大小
+            response.setContentLengthLong(file.length());
+
+            //文件名编码，解决乱码问题
+            String name = file.getName();
+            String encodedFileName = null;
+            //String userAgentString = request.getHeader("User-Agent");
+            //String browser = UserAgent.parseUserAgentString(userAgentString).getBrowser().getGroup().getName();
+            //if(browser.equals("Chrome") || browser.equals("Internet Exploer") || browser.equals("Safari")) {
+            encodedFileName = fileName;
+            //encodedFileName = URLEncoder.encode(name,"utf-8").replaceAll("\\+", "%20");
+           // } else {
+            //    encodedFileName = MimeUtility.encodeWord(fileName);
+           // }
+
+            //设置Content-Disposition响应头，一方面可以指定下载的文件名，另一方面可以引导浏览器弹出文件下载窗口
+            response.setHeader("Content-Disposition", "attachment;fileName=\"" + encodedFileName + "\"");
+
+            //文件下载
+            InputStream in = new BufferedInputStream(new FileInputStream(file));
+            FileCopyUtils.copy(in, response.getOutputStream());
+            return "";
+        } else {
+            return JsonUtils.writeStatus(0,"下载失败：文件不存在");
+        }
+    }*/
+    //TODO bugs
+    //@ResponseBody
+    @RequestMapping(value="/downloadTaskFile",produces = "application/json; charset=utf-8")
+    public ResponseEntity<byte[]> downloadTaskFile(int taskId) throws IOException {
+        //String dfileName = new String(fileName.getBytes("gb2312"), "iso8859-1");
+        String fileName = "开发规范1497853783351.txt";
+        String path = System.getProperty("web.root") + "WEB-INF/upload/task/" + fileName;
+        File file = new File(path);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", fileName);
+        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+    }
+
+
+
+
+
+
+    /*@RequestMapping(value="/downloadTaskFile",produces = "application/json; charset=utf-8")
     public ResponseEntity<byte[]> downloadTaskFile(int taskId)throws IOException  {
         File file = taskService.getTaskFile(taskId);
 //        InputStream is=file.getInputStream();
@@ -148,13 +248,13 @@ public class AdminPostController {
         } catch (IOException e) {
             throw new PostException("文件读取错误："+e.getMessage());
         }
-    }
-    @ResponseBody
+    }*/
+    /*@ResponseBody
     @RequestMapping(value="/addReplyTask",produces = "application/json; charset=utf-8")
     public String addReplyTask(String taskName, String description, HttpSession session) {
         Admin createAdmin=(Admin)session.getAttribute("user");
 
         System.out.print("-- "+taskName+"   --"+description+"  --"+"  --"+createAdmin.getUserName());
-        return Json.writeStatus(1,"添加成功");
-    }
+        return JsonUtils.writeStatus(1,"添加成功");
+    }*/
 }
