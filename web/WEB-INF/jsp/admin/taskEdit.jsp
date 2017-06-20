@@ -211,8 +211,12 @@
                 $('#errorAlert-content').html("查找失败：" + data.message);
                 $('#errorAlert').modal('show');
             } else {
-                $('#errorAlert-content').html("回复：" + data.message);
-                $('#errorAlert').modal('show');
+                $('#confirmBox-yes').unbind();
+                $('#confirmBox-no').unbind();
+                //$('#confirmBox-yes').click(yes);
+                $('#confirmBox-title').html("回复内容");
+                $('#confirmBox-content').html(data.message);
+                $('#confirmBox').modal('show');
             }
         });
     }
