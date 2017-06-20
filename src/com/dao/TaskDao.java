@@ -2,6 +2,7 @@ package com.dao;
 
 import com.entity.Exam;
 import com.entity.FileTask;
+import com.entity.ReplyTask;
 import com.entity.Task;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,18 @@ public class TaskDao extends GenericDao<Task> {
         }
         return task;
     }
+    public String getReplyMessage(int id){
+        String jpql = "SELECT t.replyMessage FROM Task t WHERE t.id=:id";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("id", id);
+        String replyMessage = null;
+        try {
+            replyMessage = (String) query.getSingleResult();
+        } catch (NoResultException e) {
+            replyMessage = null;
+        }
+        return replyMessage;
+    }
     //添加文件任务
     @Transactional
     public void addFileTask(String taskName, String deadline, String description, File file) {
@@ -59,7 +72,7 @@ public class TaskDao extends GenericDao<Task> {
     //添加回复任务
     @Transactional
     public void addReplyTask(String taskName, String deadline, String description, String replyMessage) {
-        Task task = new Task();
+        ReplyTask task = new ReplyTask();
         task.setTaskName(taskName);
         task.setDeadline(deadline);
         task.setDescription(description);

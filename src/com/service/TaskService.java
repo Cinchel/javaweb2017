@@ -56,9 +56,11 @@ public class TaskService {
             switch (task.getClass().toString()){
                 case "class com.entity.ReplyTask":
                     taskType = "回复类任务";
+                    obj.put("operation","<button class='btn btn-primary' onclick=\"showReplyMessage(" + task.getId() + ")\">查看回复</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='taskEdit_delete("+task.getId()+")'>删除任务</button>");
                     break;
                 case "class com.entity.FileTask":
                     taskType = "文件类任务";
+                    obj.put("operation","<button class='btn btn-primary' onclick=\"downloadTaskFile(" + task.getId() + ")\">下载文件</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='taskEdit_delete("+task.getId()+")'>删除任务</button>");
                     break;
                 default:
                     throw new PostException("未知类型");
@@ -68,12 +70,16 @@ public class TaskService {
             obj.put("taskType",taskType);
             obj.put("deadline",task.getDeadline());
             obj.put("description",task.getDescription());
-            obj.put("replyMessage",task.getReplyMessage());
-            obj.put("operation","<button class='btn btn-primary' onclick=\"downloadTaskFile(" + task.getId() + ")\">下载文件</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='taskEdit_delete("+task.getId()+")'>删除任务</button>");
+            //obj.put("replyMessage",task.getReplyMessage());
             list2.add(obj);
         }
         return JsonUtils.writeTableList(taskDao.taskCount(), list2);
     }
+
+    public String getReplyMessage(int taskId){
+        return taskDao.getReplyMessage(taskId);
+    }
+
     public void taskEdit(int pk,String name,String value)  {
         System.out.println("要修改的列" + name);
         Task task = taskDao.find(pk);

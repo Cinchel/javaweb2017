@@ -154,10 +154,9 @@
 
             if($('#taskType').val()=='fileTask') {
                 $('#file').fileinput('upload');
-            } /*else if($('#taskType').val()=='replyTask'){
+            } else if($('#taskType').val()=='replyTask'){
                 $.post('post/addReplyTask', {
                     taskName: $('#taskName').val(),
-                    //taskType: $('#taskType').val(),
                     deadline: $('#deadline').val(),
                     description: $('#description').val(),
                     replyMessage: $('#replyMessage').val()
@@ -170,7 +169,7 @@
                         $('#errorAlert').modal('show');
                     }
                 });
-            }*/
+            }
 
 //            if($('#deadline').val().length<1) {
 //                $('#errorAlert-content').html("请选择截止时间！");

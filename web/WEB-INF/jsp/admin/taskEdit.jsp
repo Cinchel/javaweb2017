@@ -203,6 +203,20 @@
         })
     });
 
+    function showReplyMessage(taskId){
+        $.post('post/showReplyMessage', {
+            taskId: taskId
+        }, function(data) {
+            if (data.status == 0) {
+                $('#errorAlert-content').html("查找失败：" + data.message);
+                $('#errorAlert').modal('show');
+            } else {
+                $('#errorAlert-content').html("回复：" + data.message);
+                $('#errorAlert').modal('show');
+            }
+        });
+    }
+
     function downloadTaskFile(taskId) {
         $.post('post/downloadTaskFile', {
             taskId: taskId

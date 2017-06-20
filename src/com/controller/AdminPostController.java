@@ -203,12 +203,24 @@ public class AdminPostController {
             return JsonUtils.writeStatus(0,"下载失败：文件不存在");
         }
     }*/
+
+    @ResponseBody
+    @RequestMapping(value="/showReplyMessage",produces = "application/json; charset=utf-8")
+    public String showReplyMessage(int taskId) throws IOException {
+        String replyMessage = taskService.getReplyMessage(taskId);
+        if(!replyMessage.isEmpty()){
+            return JsonUtils.writeStatus(1,replyMessage);
+        } else {
+            return JsonUtils.writeStatus(0,"此任务没有回复");
+        }
+
+    }
     //TODO bugs
     //@ResponseBody
     @RequestMapping(value="/downloadTaskFile",produces = "application/json; charset=utf-8")
     public ResponseEntity<byte[]> downloadTaskFile(int taskId) throws IOException {
         //String dfileName = new String(fileName.getBytes("gb2312"), "iso8859-1");
-        String fileName = "开发规范1497853783351.txt";
+        String fileName = "开发规范1497842778110.txt";
         String path = System.getProperty("web.root") + "WEB-INF/upload/task/" + fileName;
         File file = new File(path);
         HttpHeaders headers = new HttpHeaders();
