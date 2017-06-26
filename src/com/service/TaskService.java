@@ -1,11 +1,9 @@
 package com.service;
 
 import com.dao.TaskDao;
+import com.dao.TasksQueueDao;
 import com.dao.UserDao;
-import com.entity.FileTask;
-import com.entity.Task;
-import com.entity.Teacher;
-import com.entity.User;
+import com.entity.*;
 import com.exception.PostException;
 import com.util.FileUtils;
 import com.util.JsonUtils;
@@ -14,6 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +35,8 @@ public class TaskService {
     @Autowired
     private TaskDao taskDao;
     @Autowired
+    private TasksQueueDao tasksQueueDao;
+    @Autowired
     private UserDao userDao;
     //文件上传下载
     public static final List<FileTask> files = new ArrayList<>();
@@ -51,7 +52,13 @@ public class TaskService {
     public void addTeacherReply(int taskId, int teacherId, String replyMessage) {
         Task task = taskDao.find(taskId);
         Teacher teacher = (Teacher)userDao.find(teacherId);
-        taskDao.addTeacherReply(task,teacher,replyMessage);
+        tasksQueueDao.addTeacherReply(task,teacher,replyMessage);
+    }
+
+    public void addTeacherFile(int taskId, int teacherId , MultipartFile file , String rPath) {
+        Task task = taskDao.find(taskId);
+        Teacher teacher = (Teacher)userDao.find(teacherId);
+        tasksQueueDao.addFileTask(task, teacher, rPath);
     }
 
     public File getTaskFile(int taskId) {

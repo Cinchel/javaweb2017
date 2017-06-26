@@ -130,7 +130,6 @@
                             <li><a><i class="fa fa-tasks"></i> 任务信息 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li><a href="myTask">我的任务</a></li>
-                                    <li><a href="Task">监考信息</a></li>
                                 </ul>
                             </li>
                         </ul>

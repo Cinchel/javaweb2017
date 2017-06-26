@@ -59,7 +59,7 @@
                 </h3>
             </div>
             <div class="modal-body">
-                <div class="row row-margin-bottom">
+                <div id="teacherTaskContent" class="row row-margin-bottom">
                     <textarea name="" id="replyMessage"></textarea>
                 </div>
                 <div class="ln_solid"></div>
@@ -158,30 +158,65 @@
     });
 
     function reply(taskId){
+        $('#teacherAdd-modal-Name').html('回复');
+        $('#teacherTaskContent').html('<textarea name="" id="replyMessage"></textarea>');
         $('#teacherTask').modal('toggle');
-        $('#teacherTaskSubmit').unbind();
-        $('#teacherTaskSubmit').click(yes);
-
         var yes = function(){
             var replyMessage = $('#replyMessage').val();
             $.post('post/teacherReply', {
                 taskId: taskId,
                 replyMessage: replyMessage
             }, function(data) {
-                if (data.status == 0) {
+                if (data.status == 1){
+                    $('#errorAlert-content').html("回复成功");
+                    $('#errorAlert').modal('show');
+                }
+                else {
                     $('#errorAlert-content').html("回复失败：" + data.message);
                     $('#errorAlert').modal('show');
-                } else {
-                    $('#confirmBox-title').html("回复成功");
-                    $('#confirmBox-content').html("回复成功");
-                    $('#confirmBox').modal('show');
                 }
             });
         }
+        $('#teacherTaskSubmit').unbind();
+        $('#teacherTaskSubmit').click(yes);
     }
 
     function upload(taskId) {
-        $.get('post/teacherUpload', {
+        var teacherTaskContentHTML = '<div class="form-group" id="fileTask-div">' +
+            '<label class="control-label col-md-3 col-sm-3 col-xs-12" for="file">上传文件' +
+            '</label>' +
+            '<div class="col-md-6 col-sm-6 col-xs-12" >' +
+            '<input id="file" name="file" multiple type="file">' +
+            '</div></div>'
+        ;
+        $('#teacherAdd-modal-Name').html('上传');
+        $('#teacherTaskContent').html(teacherTaskContentHTML);
+        $('#teacherTask').modal('toggle');
+
+        $('#file').fileinput({
+            uploadUrl: 'post/teacherUpload', //上传
+            allowedFileExtensions : ['doc','docx','ppt','pptx','pdf','txt'],//接收的文件后缀
+            showUpload: false, //是否显示上传按钮
+            showCancel: false,
+            showCaption: true,//是否显示标题
+            showPreview: true,
+            showRemove: false,
+            maxFileCount: 1,
+            fileActionSettings:{
+                showUpload:false
+            },
+            autoReplace: true,
+            browseClass: "btn btn-primary", //按钮样式
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+        }).on('filebatchpreupload', function (event, data, previewId, index) {
+            data.extra.taskId = taskId;
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            $('#file').fileinput('clear').fileinput('enable');
+            $('#errorAlert-content').html(data.response.message);
+            $('#errorAlert').modal('show');
+        });
+
+        /*$.post('post/teacherUpload', {
             taskId: taskId
         }, function (data) {
             if (data.status == 0) {
@@ -195,27 +230,7 @@
                 window.open(url);
                 taskEdit();
             }
-        });
-    }
-
-    function taskEdit_delete(taskId) {
-        var yes = function () {
-            $.post('post/taskDelete', {
-                taskId: taskId
-            }, function (data) {
-                if (data.status == 0) {
-                    $('#errorAlert-content').html("删除失败：" + data.message);
-                    $('#errorAlert').modal('show');
-                }
-                else taskEdit();
-            });
-        };
-        $('#confirmBox-yes').unbind();
-        $('#confirmBox-no').unbind();
-        $('#confirmBox-yes').click(yes);
-        $('#confirmBox-title').html("确认删除？");
-        $('#confirmBox-content').html("是否删除该任务？");
-        $('#confirmBox').modal('show');
+        });*/
     }
 
 </script>

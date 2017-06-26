@@ -5,6 +5,7 @@ import com.util.DateUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.io.File;
@@ -91,7 +92,8 @@ public class TaskDao extends GenericDao<Task> {
         task.setReplyMessage(replyMessage);
         persist(task);
     }
-    //添加教师回复
+   /* //添加教师回复
+   @Transactional
     public void addTeacherReply(Task task, Teacher teacher, String replyMessage){
         TasksQueue reply = new TasksQueue();
         java.util.Date date = DateUtils.getNowUtilDate();
@@ -99,7 +101,8 @@ public class TaskDao extends GenericDao<Task> {
         reply.setTask(task);
         reply.setTeacher(teacher);
         reply.setReplyMessage(replyMessage);
-    }
+        persist(reply);
+    }*/
     //删除任务
     @Transactional
     public void taskDelete(int id) {
