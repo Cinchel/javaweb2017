@@ -12,9 +12,27 @@ public class TasksQueue {
     @ManyToOne
     private Teacher teacher;
     private String status;
-
     private String replyMessage;
     private String filePath;
+
+    public int getId() {
+        return id;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getReplyMessage() {
         return replyMessage;
