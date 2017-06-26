@@ -123,7 +123,6 @@
                             <li><a><i class="fa fa-book"></i> 监考信息 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li><a href="myInvigilation">我的监考</a></li>
-                                    <li><a href="Invigilation">监考信息</a></li>
                                 </ul>
                             </li>
 
