@@ -55,7 +55,7 @@ public class TaskService {
         tasksQueueDao.addTeacherReply(task,teacher,replyMessage);
     }
 
-    public void addTeacherFile(int taskId, int teacherId , MultipartFile file , String rPath) {
+    public void addTeacherFile(int taskId, int teacherId, String rPath) {
         Task task = taskDao.find(taskId);
         Teacher teacher = (Teacher)userDao.find(teacherId);
         tasksQueueDao.addFileTask(task, teacher, rPath);
