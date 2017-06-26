@@ -1,11 +1,9 @@
 package com.service;
 
 import com.dao.TaskDao;
+import com.dao.TasksQueueDao;
 import com.dao.UserDao;
-import com.entity.FileTask;
-import com.entity.Task;
-import com.entity.Teacher;
-import com.entity.User;
+import com.entity.*;
 import com.exception.PostException;
 import com.util.FileUtils;
 import com.util.JsonUtils;
@@ -36,6 +34,8 @@ public class TaskService {
     @Autowired
     private TaskDao taskDao;
     @Autowired
+    private TasksQueueDao tasksQueueDao;
+    @Autowired
     private UserDao userDao;
     //文件上传下载
     public static final List<FileTask> files = new ArrayList<>();
@@ -51,7 +51,7 @@ public class TaskService {
     public void addTeacherReply(int taskId, int teacherId, String replyMessage) {
         Task task = taskDao.find(taskId);
         Teacher teacher = (Teacher)userDao.find(teacherId);
-        taskDao.addTeacherReply(task,teacher,replyMessage);
+        tasksQueueDao.addTeacherReply(task,teacher,replyMessage);
     }
 
     public File getTaskFile(int taskId) {

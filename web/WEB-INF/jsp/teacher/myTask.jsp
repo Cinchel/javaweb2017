@@ -59,7 +59,7 @@
                 </h3>
             </div>
             <div class="modal-body">
-                <div class="row row-margin-bottom">
+                <div id="teacherTaskContent" class="row row-margin-bottom">
                     <textarea name="" id="replyMessage"></textarea>
                 </div>
                 <div class="ln_solid"></div>
@@ -158,29 +158,33 @@
     });
 
     function reply(taskId){
+        $('#teacherAdd-modal-Name').html('回复');
+        $('#teacherTaskContent').html('<textarea name="" id="replyMessage"></textarea>');
         $('#teacherTask').modal('toggle');
-        $('#teacherTaskSubmit').unbind();
-        $('#teacherTaskSubmit').click(yes);
-
         var yes = function(){
             var replyMessage = $('#replyMessage').val();
             $.post('post/teacherReply', {
                 taskId: taskId,
                 replyMessage: replyMessage
             }, function(data) {
-                if (data.status == 0) {
+                if (data.status == 1){
+                    $('#errorAlert-content').html("回复成功");
+                    $('#errorAlert').modal('show');
+                }
+                else {
                     $('#errorAlert-content').html("回复失败：" + data.message);
                     $('#errorAlert').modal('show');
-                } else {
-                    $('#confirmBox-title').html("回复成功");
-                    $('#confirmBox-content').html("回复成功");
-                    $('#confirmBox').modal('show');
                 }
             });
         }
+        $('#teacherTaskSubmit').unbind();
+        $('#teacherTaskSubmit').click(yes);
     }
 
     function upload(taskId) {
+        $('#teacherAdd-modal-Name').html('上传');
+        $('#teacherTaskContent').html('<div class="col-md-6 col-sm-6 col-xs-12" ><input id="file" name="file" multiple type="file"></div>');
+        $('#teacherTask').modal('toggle');
         $.get('post/teacherUpload', {
             taskId: taskId
         }, function (data) {
@@ -196,26 +200,6 @@
                 taskEdit();
             }
         });
-    }
-
-    function taskEdit_delete(taskId) {
-        var yes = function () {
-            $.post('post/taskDelete', {
-                taskId: taskId
-            }, function (data) {
-                if (data.status == 0) {
-                    $('#errorAlert-content').html("删除失败：" + data.message);
-                    $('#errorAlert').modal('show');
-                }
-                else taskEdit();
-            });
-        };
-        $('#confirmBox-yes').unbind();
-        $('#confirmBox-no').unbind();
-        $('#confirmBox-yes').click(yes);
-        $('#confirmBox-title').html("确认删除？");
-        $('#confirmBox-content').html("是否删除该任务？");
-        $('#confirmBox').modal('show');
     }
 
 </script>

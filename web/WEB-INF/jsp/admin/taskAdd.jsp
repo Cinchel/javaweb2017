@@ -125,7 +125,7 @@
         });
 
         $("#deadline").datetimepicker({
-            format: "yyyy-mm-dd hh:ii:00",
+            format: "yyyy/mm/dd hh:ii:00",
             weekStart: 1,
             autoclose: true,
             todayHighlight: 0,
