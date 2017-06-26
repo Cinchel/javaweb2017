@@ -182,10 +182,41 @@
     }
 
     function upload(taskId) {
+        var teacherTaskContentHTML = '<div class="form-group" id="fileTask-div">' +
+            '<label class="control-label col-md-3 col-sm-3 col-xs-12" for="file">上传文件' +
+            '</label>' +
+            '<div class="col-md-6 col-sm-6 col-xs-12" >' +
+            '<input id="file" name="file" multiple type="file">' +
+            '</div></div>'
+        ;
         $('#teacherAdd-modal-Name').html('上传');
-        $('#teacherTaskContent').html('<div class="col-md-6 col-sm-6 col-xs-12" ><input id="file" name="file" multiple type="file"></div>');
+        $('#teacherTaskContent').html(teacherTaskContentHTML);
         $('#teacherTask').modal('toggle');
-        $.get('post/teacherUpload', {
+
+        $('#file').fileinput({
+            uploadUrl: 'post/teacherUpload', //上传
+            allowedFileExtensions : ['doc','docx','ppt','pptx','pdf','txt'],//接收的文件后缀
+            showUpload: false, //是否显示上传按钮
+            showCancel: false,
+            showCaption: true,//是否显示标题
+            showPreview: true,
+            showRemove: false,
+            maxFileCount: 1,
+            fileActionSettings:{
+                showUpload:false
+            },
+            autoReplace: true,
+            browseClass: "btn btn-primary", //按钮样式
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+        }).on('filebatchpreupload', function (event, data, previewId, index) {
+            data.extra.taskId = taskId;
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            $('#file').fileinput('clear').fileinput('enable');
+            $('#errorAlert-content').html(data.response.message);
+            $('#errorAlert').modal('show');
+        });
+
+        /*$.post('post/teacherUpload', {
             taskId: taskId
         }, function (data) {
             if (data.status == 0) {
@@ -199,7 +230,7 @@
                 window.open(url);
                 taskEdit();
             }
-        });
+        });*/
     }
 
 </script>

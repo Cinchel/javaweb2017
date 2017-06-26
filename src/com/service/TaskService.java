@@ -12,6 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,6 +53,12 @@ public class TaskService {
         Task task = taskDao.find(taskId);
         Teacher teacher = (Teacher)userDao.find(teacherId);
         tasksQueueDao.addTeacherReply(task,teacher,replyMessage);
+    }
+
+    public void addTeacherFile(int taskId, int teacherId , MultipartFile file , String rPath) {
+        Task task = taskDao.find(taskId);
+        Teacher teacher = (Teacher)userDao.find(teacherId);
+        tasksQueueDao.addFileTask(task, teacher, rPath);
     }
 
     public File getTaskFile(int taskId) {
