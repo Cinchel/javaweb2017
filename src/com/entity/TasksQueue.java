@@ -11,6 +11,8 @@ public class TasksQueue {
     private Task task;
     @ManyToOne
     private Teacher teacher;
+
+    //private Date insertDate;
     private String status;
     private String replyMessage;
     private String filePath;
@@ -26,6 +28,16 @@ public class TasksQueue {
     public void setTask(Task task) {
         this.task = task;
     }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+
     public String getStatus() {
         return status;
     }
