@@ -96,4 +96,5 @@
     <!-- 声明方法支持使用校验注释 -->
     <bean
             class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"></bean>
+
 </beans>

@@ -99,7 +99,8 @@ public class TaskService {
                     break;
                 case "class com.entity.FileTask":
                     taskType = "文件类任务";
-                    obj.put("operation","<button class='btn btn-primary' onclick=\"downloadTaskFile(" + task.getId() + ")\">下载文件</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='taskEdit_delete("+task.getId()+")'>删除任务</button>");
+                    //obj.put("operation","<button class='btn btn-primary' onclick=\"downloadTaskFile(" + task.getId() + ")\">下载文件</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='taskEdit_delete("+task.getId()+")'>删除任务</button>");
+                    obj.put("operation","<button class='btn btn-primary' onclick=\"showReplyMessage(" + task.getId() + ")\">查看文件</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='taskEdit_delete("+task.getId()+")'>删除任务</button>");
                     obj.put("teacherOperation","<button class='btn btn-primary' onclick=\"upload(" + task.getId() + ")\">上传</button>");
 
                     break;
@@ -174,7 +175,7 @@ public class TaskService {
                 obj.put("type","回复类任务");
             }
             else {
-                obj.put("replyContent","<a href=\"aaa\"></a>");
+                obj.put("replyContent","<button class='btn btn-primary' onclick=\"downloadReplyFile(" + tq.getId() + ")\">下载文件</button>");
                 obj.put("type","文件类任务");
             }
             obj.put("id",tq.getId());

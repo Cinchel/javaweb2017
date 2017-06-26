@@ -178,4 +178,13 @@ public class ExamDao extends GenericDao<Exam>{
         query.setParameter("date", date);
         return (Long)query.getSingleResult();
     }
+
+    public List<Exam> examListOfOneDay(Date date) {
+        String jpql = "SELECT e from Exam e WHERE e.date = :date ";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("date", date);
+        List<Exam> list;
+        list = query.getResultList();
+        return list;
+    }
 }

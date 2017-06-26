@@ -193,9 +193,9 @@
         $('#teacherAdd-modal').modal('show');
     }
 
-    function downloadReplyFile(taskId) {
+    function downloadReplyFile(taskQueueId) {
         $.get('post/downloadReplyFile', {
-            taskQueueId: taskQueueId
+            tasksQueueId: taskQueueId
         }, function (data) {
             if (data.status == 0) {
                 $('#errorAlert-content').html("下载失败：" + data.message);
@@ -204,7 +204,7 @@
             else {
                 var location = window.location,
                     url =location.protocol + '//' + location.host +
-                        '/admin/post/downloadTaskFile?taskId=' + taskId;
+                        '/admin/post/downloadReplyFile?tasksQueueId=' + taskQueueId;
                 window.open(url);
                 taskEdit();
             }

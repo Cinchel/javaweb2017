@@ -13,6 +13,10 @@ public class DateUtils {
         Calendar now = Calendar.getInstance();
         return new Date(now.getTimeInMillis());
     }
+    public static java.sql.Date getTomorrowDate() {
+        Calendar now = Calendar.getInstance();
+        return new Date(now.getTimeInMillis() + 1000*60*60*24);
+    }
     public static java.util.Date getNowUtilDate() {
         Calendar now = Calendar.getInstance();
         return new java.util.Date(now.getTimeInMillis());
