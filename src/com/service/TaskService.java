@@ -3,6 +3,7 @@ package com.service;
 import com.dao.TaskDao;
 import com.entity.FileTask;
 import com.entity.Task;
+import com.entity.User;
 import com.exception.PostException;
 import com.util.FileUtils;
 import com.util.JsonUtils;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class TaskService {
@@ -33,8 +36,8 @@ public class TaskService {
     //文件上传下载
     public static final List<FileTask> files = new ArrayList<>();
 
-    public void addFileTask(String taskName, String deadline, String description, File file) {
-        taskDao.addFileTask(taskName, deadline, description, file);
+    public void addFileTask(String taskName, String deadline, String description, File file, String path) {
+        taskDao.addFileTask(taskName, deadline, description, file, path);
     }
 
     public void addReplyTask(String taskName, String deadline, String description, String replyMessage) {
@@ -44,6 +47,30 @@ public class TaskService {
     public File getTaskFile(int taskId) {
         FileTask task = (FileTask) taskDao.find(taskId);
         return task.getFile();
+    }
+
+    public String filePath(String fileName, String userName){
+        String pattern = "(.+)\\.(.+)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(fileName);
+        if(m.find()){
+            String name = m.group(1);
+            String fileSufix = m.group(2);
+            fileName = name + String.valueOf(System.currentTimeMillis() + "." + fileSufix);
+        }
+        String rPath= "WEB-INF/upload/task/admin/" + userName + "/" + fileName;
+        return rPath;
+    }
+
+    public String fileName(String path){
+        String pattern = "(.*)\\/(.+)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(path);
+        String name = "undefined";
+        if(m.find()){
+            name = m.group(2);
+        }
+        return name;
     }
 
     //获取所有Task数据
@@ -78,6 +105,9 @@ public class TaskService {
 
     public String getReplyMessage(int taskId){
         return taskDao.getReplyMessage(taskId);
+    }
+    public String getFilePath(int taskId){
+        return taskDao.getFilePath(taskId);
     }
 
     public void taskEdit(int pk,String name,String value)  {

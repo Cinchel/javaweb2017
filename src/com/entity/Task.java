@@ -11,11 +11,12 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(unique = true, nullable = false, length = 70)
+    @Column(unique = false, nullable = false, length = 70)
     private String taskName;
     private String description;
-    private String  deadline;
+    private String deadline;
     private String replyMessage;
+    private String filePath;
     @ManyToOne
     private Admin createAdmin;//创建任务的管理员
 
@@ -38,6 +39,14 @@ public class Task {
     public String getReplyMessage() {return replyMessage;}
 
     public void setReplyMessage(String replyMessage) {this.replyMessage = replyMessage;}
+
+    public String getFilePath(){
+        return filePath;
+    }
+
+    public void setFilePath(String path){
+        this.filePath = path;
+    }
 
     public Admin getCreateAdmin2() {return createAdmin;}
 

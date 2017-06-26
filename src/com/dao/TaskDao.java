@@ -59,14 +59,28 @@ public class TaskDao extends GenericDao<Task> {
         }
         return replyMessage;
     }
+
+    public String getFilePath(int id){
+        String jpql = "SELECT t.filePath FROM Task t WHERE t.id=:id";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("id", id);
+        String filePath = null;
+        try {
+            filePath = (String) query.getSingleResult();
+        } catch (NoResultException e) {
+            filePath = null;
+        }
+        return filePath;
+    }
     //添加文件任务
     @Transactional
-    public void addFileTask(String taskName, String deadline, String description, File file) {
+    public void addFileTask(String taskName, String deadline, String description, File file, String path) {
         FileTask task = new FileTask();
         task.setTaskName(taskName);
         task.setDeadline(deadline);
         task.setDescription(description);
         task.setFile(file);
+        task.setFilePath(path);
         persist(task);
     }
     //添加回复任务

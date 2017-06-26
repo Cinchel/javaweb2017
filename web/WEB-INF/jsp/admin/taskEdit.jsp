@@ -231,7 +231,8 @@
             }
             else {
                 var location = window.location,
-                    url =location.protocol + '//' + location.host + '/admin/post/downloadTaskFile?taskId=' + taskId;
+                    url =location.protocol + '//' + location.host +
+                        '/admin/post/downloadTaskFile?taskId=' + taskId;
                 window.open(url);
                 taskEdit();
             }
