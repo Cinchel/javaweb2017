@@ -193,6 +193,7 @@
             '<input id="file" name="file" multiple type="file">' +
             '</div></div>'
         ;
+        taskId = parseInt(taskId);
         $('#teacherAdd-modal-Name').html('上传');
         $('#teacherTaskContent').html(teacherTaskContentHTML);
 
@@ -219,9 +220,11 @@
             $('#errorAlert').modal('show');
         });
 
-        $('#file').fileinput('upload');
-
+        $('#teacherTaskSubmit').click(function () {
+            $('#file').fileinput('upload');
+        })
         $('#teacherTask').modal('toggle');
+
         /*$.post('post/teacherUpload', {
             taskId: taskId
         }, function (data) {
