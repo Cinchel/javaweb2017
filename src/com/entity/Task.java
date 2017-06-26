@@ -14,7 +14,7 @@ public class Task {
     @Column(unique = false, nullable = false, length = 70)
     private String taskName;
     private String description;
-    private String deadline;
+    private Date deadline;
     private String replyMessage;
     private String filePath;
     @ManyToOne
@@ -32,9 +32,21 @@ public class Task {
 
     public void setDescription(String description) {this.description = description;}
 
-    public String getDeadline() {return deadline;}
+    public Date getDeadline() {
+        return deadline;
+    }
 
-    public void setDeadline(String deadline) {this.deadline = deadline;}
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }
+
+    public Admin getCreateAdmin() {
+        return createAdmin;
+    }
+
+    public void setCreateAdmin(Admin createAdmin) {
+        this.createAdmin = createAdmin;
+    }
 
     public String getReplyMessage() {return replyMessage;}
 

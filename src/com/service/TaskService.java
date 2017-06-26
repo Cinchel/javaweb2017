@@ -40,11 +40,11 @@ public class TaskService {
     //文件上传下载
     public static final List<FileTask> files = new ArrayList<>();
 
-    public void addFileTask(String taskName, String deadline, String description, File file, String path) {
+    public void addFileTask(String taskName, Date deadline, String description, File file, String path) {
         taskDao.addFileTask(taskName, deadline, description, file, path);
     }
 
-    public void addReplyTask(String taskName, String deadline, String description, String replyMessage) {
+    public void addReplyTask(String taskName, Date deadline, String description, String replyMessage) {
         taskDao.addReplyTask(taskName, deadline, description, replyMessage);
     }
 

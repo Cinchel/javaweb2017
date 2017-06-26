@@ -79,14 +79,7 @@
 
 
 <script>
-    var ChooseExamId = 0;
-    function chooseTeacher(examId,modal_title) {
-        ChooseExamId = examId;
-        $('#teacherAdd-modal-itemTemptList').bootstrapTable('refresh', {url: 'post/invigilationTeacherSelectTableList',query: {examId: examId}});
-        $('#teacherAdd-modal-Name').html(modal_title);
-        $('#teacherAdd-modal').modal('show');
-    }
-
+    var TaskId = 0;
     function taskEdit() {
         $('#editTask-taskList').bootstrapTable('refresh');
     }
@@ -151,12 +144,6 @@
             idField: 'id',
             classes: 'table table-striped table-condensed table-hover',
             columns: [{
-                field: 'state',
-                title: '选中',
-                checkbox: true,
-                align: 'center',
-                valign: 'middle'
-            }, {
                 field: 'id',
                 title: 'ID',
                 align: 'center',
@@ -164,22 +151,17 @@
                 visible: false
             }, {
                 field: 'userName',
-                title: '姓名',
+                title: '教师姓名',
                 align: 'center',
                 valign: 'middle'
             }, {
-                field: 'title',
-                title: '职称',
+                field: 'replyTime',
+                title: '回复时间',
                 align: 'center',
                 valign: 'middle'
             }, {
-                field: 'phone',
-                title: '电话',
-                align: 'center',
-                valign: 'middle'
-            },{
-                field: 'introduction',
-                title: '简介',
+                field: 'replyContent',
+                title: '回复内容',
                 align: 'center',
                 valign: 'middle'
             }],
@@ -203,20 +185,27 @@
         })
     });
 
-    function showReplyMessage(taskId){
-        $.post('post/showReplyMessage', {
-            taskId: taskId
-        }, function(data) {
+    function showReplyMessage(taskId) {
+        TaskId = taskId;
+        $('#teacherAdd-modal-itemTemptList').bootstrapTable('refresh', {url: 'post/showReplyMessageStatus',query: {taskId: taskId}});
+        $('#teacherAdd-modal-Name').html("查看任务完成情况");
+        $('#teacherAdd-modal').modal('show');
+    }
+
+    function downloadReplyFile(taskId) {
+        $.get('post/downloadReplyFile', {
+            taskQueueId: taskQueueId
+        }, function (data) {
             if (data.status == 0) {
-                $('#errorAlert-content').html("查找失败：" + data.message);
+                $('#errorAlert-content').html("下载失败：" + data.message);
                 $('#errorAlert').modal('show');
-            } else {
-                $('#confirmBox-yes').unbind();
-                $('#confirmBox-no').unbind();
-                //$('#confirmBox-yes').click(yes);
-                $('#confirmBox-title').html("回复内容");
-                $('#confirmBox-content').html(data.message);
-                $('#confirmBox').modal('show');
+            }
+            else {
+                var location = window.location,
+                    url =location.protocol + '//' + location.host +
+                        '/admin/post/downloadTaskFile?taskId=' + taskId;
+                window.open(url);
+                taskEdit();
             }
         });
     }

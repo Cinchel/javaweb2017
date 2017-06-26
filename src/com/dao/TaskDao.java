@@ -72,7 +72,7 @@ public class TaskDao extends GenericDao<Task> {
     }
     //添加文件任务
     @Transactional
-    public void addFileTask(String taskName, String deadline, String description, File file, String path) {
+    public void addFileTask(String taskName, java.util.Date deadline, String description, File file, String path) {
         FileTask task = new FileTask();
         task.setTaskName(taskName);
         task.setDeadline(deadline);
@@ -83,7 +83,7 @@ public class TaskDao extends GenericDao<Task> {
     }
     //添加回复任务
     @Transactional
-    public void addReplyTask(String taskName, String deadline, String description, String replyMessage) {
+    public void addReplyTask(String taskName, java.util.Date deadline, String description, String replyMessage) {
         ReplyTask task = new ReplyTask();
         task.setTaskName(taskName);
         task.setDeadline(deadline);

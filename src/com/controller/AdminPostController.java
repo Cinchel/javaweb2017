@@ -128,14 +128,14 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/addReplyTask",produces = "application/json; charset=utf-8")
-    public String addReplyTask(String taskName, String deadline, String description, String replyMessage, HttpSession session) throws IOException {
+    public String addReplyTask(String taskName, java.util.Date deadline, String description, String replyMessage, HttpSession session) throws IOException {
         Admin createAdmin=(Admin)session.getAttribute("user");
         taskService.addReplyTask(taskName, deadline, description, replyMessage);
         return JsonUtils.writeStatus(1,"添加成功");
     }
     @ResponseBody
     @RequestMapping(value="/addFileTask",produces = "application/json; charset=utf-8")
-    public String addFileTask(String taskName, String deadline, String description, MultipartFile file, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
+    public String addFileTask(String taskName, java.util.Date deadline, String description, MultipartFile file, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
         if (!file.isEmpty()) {
             //文件信息传至数据库
             CommonsMultipartFile cf= (CommonsMultipartFile)file;
