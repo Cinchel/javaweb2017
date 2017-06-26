@@ -32,7 +32,8 @@ public class UserService {
 		user.setTitle(title);
 		user.setIntroduction(introduction);
 		user.setPhone(phone);
-		if(null!=userDao.findWithoutPassword(user.getUserName())) throw new PostException("用户名已存在");
+		User t_user = userDao.findWithoutPassword(user.getUserName());
+		if(user.getId()!=t_user.getId() && t_user!=null) throw new PostException("用户名已存在");
 		if(user.getUserName().length()<2 || user.getUserName().length()>10) throw new PostException("用户名长度必须在2~10之间");
 		if(user.getPhone().length()<2 || user.getPhone().length()>18) throw new PostException("电话长度必须在2~18之间");
 		if(!user.getPhone().matches("\\d+")) throw new PostException("电话号码只能包含数字字符");

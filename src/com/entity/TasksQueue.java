@@ -12,4 +12,23 @@ public class TasksQueue {
     @ManyToOne
     private Teacher teacher;
     private String status;
+
+    private String replyMessage;
+    private String filePath;
+
+    public String getReplyMessage() {
+        return replyMessage;
+    }
+
+    public void setReplyMessage(String replyMessage) {
+        this.replyMessage = replyMessage;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 }
