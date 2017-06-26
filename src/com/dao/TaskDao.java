@@ -1,9 +1,6 @@
 package com.dao;
 
-import com.entity.Exam;
-import com.entity.FileTask;
-import com.entity.ReplyTask;
-import com.entity.Task;
+import com.entity.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,6 +89,13 @@ public class TaskDao extends GenericDao<Task> {
         task.setDescription(description);
         task.setReplyMessage(replyMessage);
         persist(task);
+    }
+    //添加教师回复
+    public void addTeacherReply(Task task, Teacher teacher, String replyMessage){
+        TasksQueue reply = new TasksQueue();
+        reply.setTask(task);
+        reply.setTeacher(teacher);
+        reply.setReplyMessage(replyMessage);
     }
     //删除任务
     @Transactional
