@@ -2,6 +2,7 @@ package com.controller;
 
 import com.entity.User;
 import com.service.ExamService;
+import com.service.TaskService;
 import com.service.UserService;
 import com.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by libby on 2017/6/16.
- */
 @Controller
 @RequestMapping("/teacher/post")
 public class TeacherPostController {
@@ -21,6 +19,8 @@ public class TeacherPostController {
     private UserService userService;
     @Autowired
     private ExamService examService;
+    @Autowired
+    private TaskService taskService;
 
     @ResponseBody
     @RequestMapping(value="/myExamListPost",produces = "application/json; charset=utf-8")
@@ -30,6 +30,11 @@ public class TeacherPostController {
         return examService.myExamList(offset, limit,teacher_id);
     }
 
-
+    //任务
+    @ResponseBody
+    @RequestMapping(value="/taskListPost",produces = "application/json; charset=utf-8")
+    public String taskList(int offset,int limit) {
+        return taskService.taskList(offset, limit);
+    }
 
 }
