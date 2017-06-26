@@ -24,7 +24,6 @@ import java.util.List;
 public class TaskService {
     //文件上传下载
     public static final List<FileTask> files = new ArrayList<>();
-
     public void addLecture(byte[] bytes,String originalFilename) {
         String ext = FilenameUtils.getExtension(originalFilename);
         String baseName = FilenameUtils.getBaseName(originalFilename);
