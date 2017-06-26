@@ -7,6 +7,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="head.jsp"/>
+<link rel='stylesheet' type='text/css' href='/public/css/bootstrap-datetimepicker.min.css'/>
+<script src='/public/js/bootstrap-datetimepicker.min.js' type='text/javascript'></script>
+<link rel='stylesheet' type='text/css' href='/public/css/fileinput.min.css'/>
+<script src='/public/js/fileinput.min.js' type='text/javascript'></script>
 <style>
     #replyMessage{
         border-color:#e5e5e5;
@@ -191,7 +195,6 @@
         ;
         $('#teacherAdd-modal-Name').html('上传');
         $('#teacherTaskContent').html(teacherTaskContentHTML);
-        $('#teacherTask').modal('toggle');
 
         $('#file').fileinput({
             uploadUrl: 'post/teacherUpload', //上传
@@ -216,6 +219,9 @@
             $('#errorAlert').modal('show');
         });
 
+        $('#file').fileinput('upload');
+
+        $('#teacherTask').modal('toggle');
         /*$.post('post/teacherUpload', {
             taskId: taskId
         }, function (data) {
