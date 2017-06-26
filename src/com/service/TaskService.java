@@ -49,12 +49,6 @@ public class TaskService {
         taskDao.addReplyTask(taskName, deadline, description, replyMessage);
     }
 
-    public void addTeacherReply(int taskId, int teacherId, String replyMessage) {
-        Task task = taskDao.find(taskId);
-        Teacher teacher = (Teacher)userDao.find(teacherId);
-        tasksQueueDao.addTeacherReply(task,teacher,replyMessage);
-    }
-
     public void addTeacherFile(int taskId, int teacherId , MultipartFile file , String rPath) {
         Task task = taskDao.find(taskId);
         Teacher teacher = (Teacher)userDao.find(teacherId);
@@ -167,44 +161,42 @@ public class TaskService {
         taskDao.taskDelete(examId);
     }
 
+    public String showReplyList(int taskId) {
+        Task task = taskDao.find(taskId);
+        List<TasksQueue> list = taskDao.getTaskQueue(task);
+        List<JSONObject> res = new ArrayList<JSONObject>();
+        for(TasksQueue tq : list) {
+            JSONObject obj = new JSONObject();
+            obj.put("userName",tq.getTeacher().getUserName());
+            obj.put("replyTime",tq.getInsertDate());
+            if(tq.getTask().getClass().toString().equals("class com.entity.ReplyTask")) {
+                obj.put("replyContent",tq.getReplyMessage());
+                obj.put("type","回复类任务");
+            }
+            else {
+                obj.put("replyContent","<a href=\"aaa\"></a>");
+                obj.put("type","文件类任务");
+            }
+            obj.put("id",tq.getId());
+            res.add(obj);
+        }
+        return res.toString();
+    }
 
+    public String getQueueFilePath(int tasksQueueId) {
+        TasksQueue tq = tasksQueueDao.find(tasksQueueId);
+        return tq.getFilePath();
+    }
 
-//    public void addLecture(byte[] bytes,String originalFilename) {
-//        String ext = FilenameUtils.getExtension(originalFilename);
-//        String baseName = FilenameUtils.getBaseName(originalFilename);
-//        Path path = Paths.get(baseName + "-" + "BO" + "." + ext);
-//        FileUtils.copy(bytes, path);
-//        Task fileTask=new FileTask();
-//        fileTask.setId(files.size()+1);
-//        fileTask.setFileName(path.toString());
-//        files.add(fileTask);
-//    }
+    public void addTeacherReply(int taskId, int teacherId, String replyMessage) {
+        Task task = taskDao.find(taskId);
+        Teacher teacher = (Teacher)userDao.find(teacherId);
+        tasksQueueDao.addTeacherReply(task,teacher,replyMessage);
+    }
 
-//    public void addFile(byte[] bytes,String originalFilename) {
-//        String ext = FilenameUtils.getExtension(originalFilename);
-//        String baseName = FilenameUtils.getBaseName(originalFilename);
-//        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
-//        Path path = Paths.get(baseName + "-" + sf.format(new Date()) + "." + ext);
-//        FileUtils.copy(bytes, path);
-//    }
-
-
-
-//    public FileTask getFileTask(int fileId) {
-//        FileTask fileTask = null;
-//        for (FileTask ft : files) {
-//            if (ft.getId() == fileId) {
-//                fileTask = ft;
-//            }
-//        }
-//        return fileTask;
-//    }
-
-//    public void getExecption(String message) {
-//        try(InputStream stream = new FileInputStream(message)) {
-//        } catch (IOException e) {
-//            throw new PostException("文件读取异常，请重新输入!" + e.getMessage());
-//        }
-//    }
-
+    public void addTeacherFile(int taskId, int teacherId, String rPath) {
+        Task task = taskDao.find(taskId);
+        Teacher teacher = (Teacher)userDao.find(teacherId);
+        tasksQueueDao.addFileTask(task, teacher, rPath);
+    }
 }

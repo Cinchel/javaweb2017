@@ -34,18 +34,6 @@ public class TaskDao extends GenericDao<Task> {
         Query query = getEntityManager().createQuery(jpql);
         return (Long)query.getSingleResult();
     }
-    public Task find(int id){
-        String jpql = "FROM Task t WHERE t.id=:id";
-        Query query = getEntityManager().createQuery(jpql);
-        query.setParameter("id", id);
-        Task task = null;
-        try {
-            task = (Task) query.getSingleResult();
-        } catch (NoResultException e) {
-            task = null;
-        }
-        return task;
-    }
     public String getReplyMessage(int id){
         String jpql = "SELECT t.replyMessage FROM Task t WHERE t.id=:id";
         Query query = getEntityManager().createQuery(jpql);
@@ -120,5 +108,12 @@ public class TaskDao extends GenericDao<Task> {
         query.setParameter(1,value);
         query.setParameter(2,id);
         query.executeUpdate();
+    }
+
+    public List<TasksQueue> getTaskQueue(Task task) {
+        String jpql = "select tq from TasksQueue tq where tq.task = :task";
+        Query query =  this.getEntityManager().createQuery(jpql);
+        query.setParameter("task", task);
+        return query.getResultList();
     }
 }

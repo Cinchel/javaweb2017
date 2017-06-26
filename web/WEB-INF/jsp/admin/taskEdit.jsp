@@ -156,6 +156,11 @@
                 align: 'center',
                 valign: 'middle'
             }, {
+                field: 'type',
+                title: '任务类型',
+                align: 'center',
+                valign: 'middle'
+            },  {
                 field: 'replyContent',
                 title: '回复内容',
                 align: 'center',

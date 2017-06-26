@@ -173,8 +173,7 @@ public class AdminPostController {
     @ResponseBody
     @RequestMapping(value="/showReplyMessageStatus",produces = "application/json; charset=utf-8")
     public String showReplyMessageStatus(int taskId) throws IOException {
-        return "[]";
-        //taskService.showReplyMessageStatus(taskId);
+        return taskService.showReplyList(taskId);
     }
 
     @ResponseBody
@@ -182,6 +181,20 @@ public class AdminPostController {
     public ResponseEntity<byte[]> downloadTaskFile(int taskId) throws IOException {
         //String dfileName = new String(fileName.getBytes("gb2312"), "iso8859-1");
         String filePath = taskService.getFilePath(taskId);
+        String path = System.getProperty("web.root") + filePath;
+        String fileName = taskService.fileName(path);
+        File file = new File(path);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", fileName);
+        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/downloadReplyFile",produces = "application/json; charset=utf-8")
+    public ResponseEntity<byte[]> downloadReplyFile(int tasksQueueId) throws IOException {
+        //String dfileName = new String(fileName.getBytes("gb2312"), "iso8859-1");
+        String filePath = taskService.getQueueFilePath(tasksQueueId);
         String path = System.getProperty("web.root") + filePath;
         String fileName = taskService.fileName(path);
         File file = new File(path);
