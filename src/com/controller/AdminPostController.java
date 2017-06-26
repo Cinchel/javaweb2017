@@ -171,6 +171,13 @@ public class AdminPostController {
     }
 
     @ResponseBody
+    @RequestMapping(value="/showReplyMessageStatus",produces = "application/json; charset=utf-8")
+    public String showReplyMessageStatus(int taskId) throws IOException {
+        return "[]";
+        //taskService.showReplyMessageStatus(taskId);
+    }
+
+    @ResponseBody
     @RequestMapping(value="/downloadTaskFile",produces = "application/json; charset=utf-8")
     public ResponseEntity<byte[]> downloadTaskFile(int taskId) throws IOException {
         //String dfileName = new String(fileName.getBytes("gb2312"), "iso8859-1");

@@ -66,10 +66,6 @@
                 </div>
                 <div class="ln_solid"></div>
                 <div class="row row-margin-bottom">
-                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <button id="teacherAdd-modal-submit" class="btn btn-success col-sm-4" type="button" data-dismiss="modal">提交</button>
-                        <button class="btn btn-primary col-sm-4 col-sm-offset-1" data-dismiss="modal">取消</button>
-                    </div>
                 </div>
             </div>
         </div><!-- /.modal-content -->

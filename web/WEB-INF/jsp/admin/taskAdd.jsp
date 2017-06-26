@@ -50,7 +50,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="deadline" >截止时间
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="deadline" class="form-control col-md-7 col-xs-12" type="text">
+                                    <input id="deadline" class="form-control col-md-7 col-xs-12" type="text" readonly>
                                 </div>
                             </div>
                             <div class="form-group" id="replyTask-div">
@@ -125,7 +125,7 @@
         });
 
         $("#deadline").datetimepicker({
-            format: "yyyy-mm-dd hh:ii:00",
+            format: "yyyy/mm/dd hh:ii:00",
             weekStart: 1,
             autoclose: true,
             todayHighlight: 0,

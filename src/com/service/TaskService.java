@@ -108,7 +108,9 @@ public class TaskService {
             obj.put("id",task.getId());
             obj.put("taskName",task.getTaskName());
             obj.put("taskType",taskType);
-            obj.put("deadline",task.getDeadline());
+            String tmp = task.getDeadline().toString();
+            tmp = tmp.substring(0, tmp.length()-2);
+            obj.put("deadline",tmp);
             obj.put("description",task.getDescription());
             //obj.put("replyMessage",task.getReplyMessage());
             list2.add(obj);
@@ -139,9 +141,8 @@ public class TaskService {
                 }
                 break;
             case "deadline":
-                if(!value.matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}")) throw new PostException("请输入正确的时间格式");
                 try {
-                    sdf.parse("2017-01-01 " + value);
+                    sdf.parse(value);
                 } catch (ParseException e) {
                     throw new PostException("请输入正确的时间格式");
                 }
