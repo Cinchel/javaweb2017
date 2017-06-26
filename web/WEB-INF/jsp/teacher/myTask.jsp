@@ -7,7 +7,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="head.jsp"/>
-
+<style>
+    #replyMessage{
+        border-color:#e5e5e5;
+        width:100%;
+        max-width:100%;
+        height: 40em;
+    }
+</style>
 
 <div class="right_col" role="main">
     <div class="">
@@ -38,7 +45,7 @@
 </div>
 
 
-<div class="modal fade" id="teacherAdd-modal" tabindex="-1" role="dialog"
+<div class="modal fade" id="teacherTask" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" style="width: 900px">
@@ -48,26 +55,17 @@
                     &times;
                 </button>
                 <h3 class="modal-title" id="myModalLabel">
-                    <span id="teacherAdd-modal-Name">teacherAdd-modal-Name</span>
-                    <input class="form-control" type="hidden"
-                           id="teacherAdd-modal-markedUser"
-                           value="">
-                    <input class="form-control" type="hidden"
-                           id="teacherAdd-modal-markedUserItem" value="">
+                    <span id="teacherAdd-modal-Name">回复</span>
                 </h3>
             </div>
             <div class="modal-body">
-                <div class="row row-margin-bottom"
-                     id="teacherAdd-modal-itemTemptListTable">
-                    <div class="col-sm-12">
-                        <table id="teacherAdd-modal-itemTemptList">
-                        </table>
-                    </div>
+                <div class="row row-margin-bottom">
+                    <textarea name="" id="replyMessage"></textarea>
                 </div>
                 <div class="ln_solid"></div>
                 <div class="row row-margin-bottom">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <button id="teacherAdd-modal-submit" class="btn btn-success col-sm-4" type="button" data-dismiss="modal">提交</button>
+                        <button id="teacherTaskSubmit" class="btn btn-success col-sm-4" type="button" data-dismiss="modal">提交</button>
                         <button class="btn btn-primary col-sm-4 col-sm-offset-1" data-dismiss="modal">取消</button>
                     </div>
                 </div>
@@ -110,7 +108,7 @@
                 title: '任务名称',
                 align: 'center',
                 valign: 'middle',
-                editable: true,
+                editable: false,
                 editableUrl: "post/editTask"
             }, {
                 field: 'taskType',
@@ -124,14 +122,14 @@
                 title: '截止日期',
                 align: 'center',
                 valign: 'middle',
-                editable: true,
+                editable: false,
                 editableUrl: "post/editTask"
             }, {
                 field: 'description',
                 title: '任务描述',
                 align: 'center',
                 valign: 'middle',
-                editable: true,
+                editable: false,
                 editableUrl: "post/editTask"
             }, {
                 field: 'teacherOperation',
@@ -141,50 +139,6 @@
             }],
             pagination: true,
             sidePagination: 'server',
-            pageSize: 20
-        });
-        $('#teacherAdd-modal-itemTemptList').bootstrapTable({
-            afterLoad: function() {
-                $.fn.editable.defaults.mode = 'popup';
-            },
-            method: 'get',
-            idField: 'id',
-            classes: 'table table-striped table-condensed table-hover',
-            columns: [{
-                field: 'state',
-                title: '选中',
-                checkbox: true,
-                align: 'center',
-                valign: 'middle'
-            }, {
-                field: 'id',
-                title: 'ID',
-                align: 'center',
-                valign: 'middle',
-                visible: false
-            }, {
-                field: 'userName',
-                title: '姓名',
-                align: 'center',
-                valign: 'middle'
-            }, {
-                field: 'title',
-                title: '职称',
-                align: 'center',
-                valign: 'middle'
-            }, {
-                field: 'phone',
-                title: '电话',
-                align: 'center',
-                valign: 'middle'
-            },{
-                field: 'introduction',
-                title: '简介',
-                align: 'center',
-                valign: 'middle'
-            }],
-            pagination: true,
-            sidePagination: 'client',
             pageSize: 20
         });
         $('#teacherAdd-modal-submit').click(function() {
@@ -204,25 +158,30 @@
     });
 
     function reply(taskId){
-        $.post('post/showReplyMessage', {
-            taskId: taskId
-        }, function(data) {
-            if (data.status == 0) {
-                $('#errorAlert-content').html("查找失败：" + data.message);
-                $('#errorAlert').modal('show');
-            } else {
-                $('#confirmBox-yes').unbind();
-                $('#confirmBox-no').unbind();
-                //$('#confirmBox-yes').click(yes);
-                $('#confirmBox-title').html("回复内容");
-                $('#confirmBox-content').html(data.message);
-                $('#confirmBox').modal('show');
-            }
-        });
+        $('#teacherTask').modal('toggle');
+        $('#teacherTaskSubmit').unbind();
+        $('#teacherTaskSubmit').click(yes);
+
+        var yes = function(){
+            var replyMessage = $('#replyMessage').val();
+            $.post('post/teacherReply', {
+                taskId: taskId,
+                replyMessage: replyMessage
+            }, function(data) {
+                if (data.status == 0) {
+                    $('#errorAlert-content').html("回复失败：" + data.message);
+                    $('#errorAlert').modal('show');
+                } else {
+                    $('#confirmBox-title').html("回复成功");
+                    $('#confirmBox-content').html("回复成功");
+                    $('#confirmBox').modal('show');
+                }
+            });
+        }
     }
 
     function upload(taskId) {
-        $.get('post/downloadTaskFile', {
+        $.get('post/teacherUpload', {
             taskId: taskId
         }, function (data) {
             if (data.status == 0) {

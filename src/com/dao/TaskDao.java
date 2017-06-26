@@ -1,6 +1,7 @@
 package com.dao;
 
 import com.entity.*;
+import com.util.DateUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,6 +94,8 @@ public class TaskDao extends GenericDao<Task> {
     //添加教师回复
     public void addTeacherReply(Task task, Teacher teacher, String replyMessage){
         TasksQueue reply = new TasksQueue();
+        java.util.Date date = DateUtils.getNowUtilDate();
+        reply.setInsertDate(date);
         reply.setTask(task);
         reply.setTeacher(teacher);
         reply.setReplyMessage(replyMessage);

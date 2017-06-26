@@ -9,8 +9,12 @@ import java.util.Calendar;
  * Created by onlymzzhang on 2017/6/26.
  */
 public class DateUtils {
-    public static Date getNowDate() {
+    public static java.sql.Date getNowDate() {
         Calendar now = Calendar.getInstance();
         return new Date(now.getTimeInMillis());
+    }
+    public static java.util.Date getNowUtilDate() {
+        Calendar now = Calendar.getInstance();
+        return new java.util.Date(now.getTimeInMillis());
     }
 }

@@ -1,6 +1,7 @@
 package com.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class TasksQueue {
@@ -12,7 +13,7 @@ public class TasksQueue {
     @ManyToOne
     private Teacher teacher;
 
-    //private Date insertDate;
+    private Date insertDate;
     private String status;
     private String replyMessage;
     private String filePath;
@@ -60,5 +61,17 @@ public class TasksQueue {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getInsertDate() {
+        return insertDate;
+    }
+
+    public void setInsertDate(Date insertDate) {
+        this.insertDate = insertDate;
     }
 }

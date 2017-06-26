@@ -36,4 +36,12 @@ public class TeacherPostController {
     public String taskList(int offset,int limit) {
         return taskService.taskList(offset, limit);
     }
+    @ResponseBody
+    @RequestMapping(value="/teacherReply",produces = "application/json; charset=utf-8")
+    public String teacherReply(int taskId, String replyMessage, HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        int teacherId = user.getId();
+        taskService.addTeacherReply(taskId, teacherId, replyMessage);
+        return JsonUtils.writeStatus(1,"回复成功");
+    }
 }
