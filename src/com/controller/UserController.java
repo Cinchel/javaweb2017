@@ -55,9 +55,9 @@ public class UserController {
 
 		if (user != null) {
 			userService.modifyPassword(pk,newPwd);
-			return Json.writeStatus(1,"密码修改成功");
+			return JsonUtils.writeStatus(1,"密码修改成功");
 		} else {
-			return Json.writeStatus(0,"用户名或原密码错误");
+			return JsonUtils.writeStatus(0,"用户名或原密码错误");
 		}
 	}
 	//更新个人设置
@@ -66,7 +66,7 @@ public class UserController {
 	public String updateUser(HttpSession session,String userName, String title, String introduction, String phone)  {
 		User user=(User) session.getAttribute("user");
 		userService.updateUser(user,userName,title,introduction,phone);
-		return Json.writeStatus(1,"更新成功");
+		return JsonUtils.writeStatus(1,"更新成功");
 	}
 
 }

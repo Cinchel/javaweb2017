@@ -86,7 +86,7 @@ public class ExamService {
             obj.put("teachers",teachers);
             list2.add(obj);
         }
-        return Json.writeTableList(examDao.ExamCount(),list2);
+        return JsonUtils.writeTableList(examDao.ExamCount(),list2);
     }
 
     //修改
