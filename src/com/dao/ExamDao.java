@@ -38,6 +38,23 @@ public class ExamDao extends GenericDao<Exam>{
         else list = query.getResultList();
         return list;
     }
+    //我的监考
+    public List<Exam> myexamList(int offset, int limit,int teacher_id) {
+
+        String jpql = "SELECT e from Exam e WHERE e.id in (select t.exam.id from ExamTeacher  t where t.teacher.id=:teacher_id) order by e.date asc ";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("teacher_id", teacher_id);
+        List<Exam> list;
+        if(limit>0) {
+            list = query
+                    .setFirstResult(offset)
+                    .setMaxResults(limit)
+                    .getResultList();
+        }
+        else list = query.getResultList();
+        return list;
+    }
+
     @Transactional
     public Exam insertExam(String name, String room, String date, Time startTime, Time endTime,int number, Admin createAdmin) {
         Exam exam1 = new Exam();
@@ -76,6 +93,8 @@ public class ExamDao extends GenericDao<Exam>{
         return (Long)query.getSingleResult();
 
     }
+
+
     //删除考试
     @Transactional
     public void ExamDelete(int id) {

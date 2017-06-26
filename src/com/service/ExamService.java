@@ -70,6 +70,31 @@ public class ExamService {
         }
         return Json.writeTableList(examDao.ExamCount(), list2);
     }
+    //我的监考
+    public String myExamList(int offset,int limit,int teacher_id) {
+        List<Exam> list = examDao.myexamList(offset,limit,teacher_id);
+        List<JSONObject> list2 = new ArrayList<JSONObject>();
+        for(Exam exam : list) {
+            JSONObject obj = new JSONObject();
+            obj.put("id",exam.getId());
+            obj.put("name",exam.getName());
+            obj.put("date",exam.getDate());
+            obj.put("room",exam.getRoom());
+            obj.put("startTime",exam.getStartTime());
+            obj.put("endTime",exam.getEndTime());
+            obj.put("number",exam.getNumber());
+            obj.put("createAdmin",exam.getCreateAdmin().getUserName());
+            Set<ExamTeacher> li = exam.getExamTeacher();
+            String teachers = "";
+            for (ExamTeacher examTeacher:li) {
+                teachers += examTeacher.getTeacher().getUserName()+",";
+            }
+            obj.put("teachers",teachers);
+            list2.add(obj);
+        }
+        return Json.writeTableList(examDao.ExamCount(),list2);
+    }
+
     //修改
     public void examEdit(int pk,String name,String value)  {
         System.out.println("要修改的列" + name);

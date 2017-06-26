@@ -13,6 +13,9 @@ import java.util.List;
 
 @Repository
 public class UserDao extends GenericDao<User> {
+
+
+
 	public User find(String userName, String password) {
 		String jpql = "FROM User u WHERE u.userName=:userName AND u.password=:password";
 		Query query = getEntityManager().createQuery(jpql);
@@ -80,6 +83,9 @@ public class UserDao extends GenericDao<User> {
         refresh(user);
         return user;
     }
+
+
+
     public Long usersCount() {
         String jpql = "SELECT count(u) FROM User u where u.userName != 'root'";
         Query query = getEntityManager().createQuery(jpql);
@@ -105,6 +111,7 @@ public class UserDao extends GenericDao<User> {
         query.setParameter(1,userId);
         query.executeUpdate();
     }
+
     public void userModify(int pk, String name, String value) {
         String sql = "update user set "+name+" = ? where id=?";
         Query query =  this.getEntityManager().createNativeQuery(sql);
@@ -112,4 +119,12 @@ public class UserDao extends GenericDao<User> {
         query.setParameter(2,pk);
         query.executeUpdate();
     }
+
+    //更新个人设置
+    @Transactional
+    public User updateUser(User user) {
+        merge(user);
+        return user;
+    }
+
 }

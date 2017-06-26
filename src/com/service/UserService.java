@@ -20,6 +20,27 @@ import java.util.List;
 public class UserService {
 	@Autowired
 	private UserDao userDao;
+
+   //更改密码
+	public void modifyPassword(int pk, String newPwd)  {
+		if(newPwd.length()>40) throw new PostException("新密码超出字数限制");
+		userDao.userModify(pk,"password",newPwd);
+	}
+
+    //更新个人设置
+	public void updateUser(User user,String userName, String title, String introduction, String phone)  {
+		user.setUserName(userName);
+		user.setTitle(title);
+		user.setIntroduction(introduction);
+		user.setPhone(phone);
+		if(null!=userDao.findWithoutPassword(user.getUserName())) throw new PostException("用户名已存在");
+		if(user.getUserName().length()<2 || user.getUserName().length()>10) throw new PostException("用户名长度必须在2~10之间");
+		if(user.getPhone().length()<2 || user.getPhone().length()>18) throw new PostException("电话长度必须在2~18之间");
+		if(!user.getPhone().matches("\\d+")) throw new PostException("电话号码只能包含数字字符");
+		userDao.updateUser(user);
+	}
+
+
 	public User getUser(String userName, String password)  {
 		return userDao.find(userName, password);
 	}
@@ -83,10 +104,10 @@ public class UserService {
             if(value.length()<2 || value.length()>18) throw new PostException("电话长度必须在2~18之间");
 		}
 		else if(name.equals("introduction")) {
-			if(name.length()>300) throw new PostException("超出字数限制");
+			if(value.length()>300) throw new PostException("超出字数限制");
 		}
 		else if(name.equals("title")) {
-			if(name.length()>10) throw new PostException("超出字数限制");
+			if(value.length()>10) throw new PostException("超出字数限制");
 		}
 		else throw new PostException("未知列，请输入正确的列名");
         userDao.userModify(pk,name,value);
