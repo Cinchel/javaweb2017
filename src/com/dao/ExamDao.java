@@ -35,6 +35,18 @@ public class ExamDao extends GenericDao<Exam>{
         else list = query.getResultList();
         return list;
     }
+    //timer查看监考
+
+    public List<Exam> examList() {
+        String jpql = "SELECT e from Exam as e  order by e.id desc";
+        Query query = getEntityManager().createQuery(jpql);
+        List<Exam> list;
+       list = query.getResultList();
+        return list;
+    }
+
+
+
     //我的监考
     public List<Exam> myexamList(int offset, int limit,int teacher_id) {
 
