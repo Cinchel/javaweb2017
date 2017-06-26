@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.entity.Admin;
+import com.entity.User;
 import com.exception.PostException;
 import com.service.ExamService;
 import com.service.TaskService;
@@ -134,25 +135,20 @@ public class AdminPostController {
     }
     @ResponseBody
     @RequestMapping(value="/addFileTask",produces = "application/json; charset=utf-8")
-    public String addFileTask(String taskName, String deadline, String description, MultipartFile file, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
+    public String addFileTask(String taskName, String deadline, String description, MultipartFile file, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
         if (!file.isEmpty()) {
             //文件信息传至数据库
             CommonsMultipartFile cf= (CommonsMultipartFile)file;
             DiskFileItem fi = (DiskFileItem)cf.getFileItem();
             File f = fi.getStoreLocation();
-            taskService.addFileTask(taskName, deadline, description, f);
+            String fileName = file.getOriginalFilename();
+            User user = (User)session.getAttribute("user");
+            String userName = user.getUserName();
+            String rPath = taskService.filePath(fileName, userName);
+            taskService.addFileTask(taskName, deadline, description, f, rPath);
 
             //文件名+时间戳 上传至服务器文件夹
-            String fileName = file.getOriginalFilename();
-            String pattern = "(.+)\\.(.+)";
-            Pattern r = Pattern.compile(pattern);
-            Matcher m = r.matcher(fileName);
-            if(m.find()){
-                String name = m.group(1);
-                String fileSufix = m.group(2);
-                fileName = name + String.valueOf(System.currentTimeMillis() + "." + fileSufix);
-            }
-            String path=System.getProperty("web.root") + "WEB-INF/upload/task/" + fileName;
+            String path = System.getProperty("web.root") + rPath;
             File serviceFile=new File(path);
             if (!serviceFile.exists())
                 serviceFile.mkdirs();
@@ -161,48 +157,6 @@ public class AdminPostController {
         }
         else return JsonUtils.writeStatus(0,"添加失败：文件为空");
     }
-    /*@ResponseBody
-    @RequestMapping(value="/downloadTaskFile",produces = "application/json; charset=utf-8")
-    public String downloadTaskFile(int taskId, HttpServletResponse response,HttpServletRequest request) throws IOException  {
-        String fileName = "开发规范1497853783351.txt";
-        String path = System.getProperty("web.root") + "WEB-INF/upload/task/" + fileName;
-        File file = new File(path);
-        System.out.print(path);
-        //判断文件是否存在
-        if(file.exists()) {
-            //判断文件类型
-            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-            if(mimeType == null) {
-                mimeType = "application/octet-stream";
-            }
-            response.setContentType(mimeType);
-
-            //设置文件响应大小
-            response.setContentLengthLong(file.length());
-
-            //文件名编码，解决乱码问题
-            String name = file.getName();
-            String encodedFileName = null;
-            //String userAgentString = request.getHeader("User-Agent");
-            //String browser = UserAgent.parseUserAgentString(userAgentString).getBrowser().getGroup().getName();
-            //if(browser.equals("Chrome") || browser.equals("Internet Exploer") || browser.equals("Safari")) {
-            encodedFileName = fileName;
-            //encodedFileName = URLEncoder.encode(name,"utf-8").replaceAll("\\+", "%20");
-           // } else {
-            //    encodedFileName = MimeUtility.encodeWord(fileName);
-           // }
-
-            //设置Content-Disposition响应头，一方面可以指定下载的文件名，另一方面可以引导浏览器弹出文件下载窗口
-            response.setHeader("Content-Disposition", "attachment;fileName=\"" + encodedFileName + "\"");
-
-            //文件下载
-            InputStream in = new BufferedInputStream(new FileInputStream(file));
-            FileCopyUtils.copy(in, response.getOutputStream());
-            return "";
-        } else {
-            return JsonUtils.writeStatus(0,"下载失败：文件不存在");
-        }
-    }*/
 
     @ResponseBody
     @RequestMapping(value="/showReplyMessage",produces = "application/json; charset=utf-8")
@@ -215,13 +169,14 @@ public class AdminPostController {
         }
 
     }
-    //TODO bugs
+
     @ResponseBody
     @RequestMapping(value="/downloadTaskFile",produces = "application/json; charset=utf-8")
     public ResponseEntity<byte[]> downloadTaskFile(int taskId) throws IOException {
         //String dfileName = new String(fileName.getBytes("gb2312"), "iso8859-1");
-        String fileName = "开发规范1497842778110.txt";
-        String path = System.getProperty("web.root") + "WEB-INF/upload/task/" + fileName;
+        String filePath = taskService.getFilePath(taskId);
+        String path = System.getProperty("web.root") + filePath;
+        String fileName = taskService.fileName(path);
         File file = new File(path);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

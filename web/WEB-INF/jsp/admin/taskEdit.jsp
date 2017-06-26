@@ -231,8 +231,10 @@
             }
             else {
                 var location = window.location,
-                    url = location.host + location.port + '/admin/tastEdit?taskId' + taskId;
+                    url =location.protocol + '//' + location.host +
+                        '/admin/post/downloadTaskFile?taskId=' + taskId;
                 window.open(url);
+                taskEdit();
             }
         });
     }
