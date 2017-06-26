@@ -222,14 +222,18 @@
     }
 
     function downloadTaskFile(taskId) {
-        $.post('post/downloadTaskFile', {
+        $.get('post/downloadTaskFile', {
             taskId: taskId
         }, function (data) {
             if (data.status == 0) {
                 $('#errorAlert-content').html("下载失败：" + data.message);
                 $('#errorAlert').modal('show');
             }
-            else taskEdit();
+            else {
+                var location = window.location,
+                    url = location.host + location.port + '/admin/tastEdit?taskId' + taskId;
+                window.open(url);
+            }
         });
     }
 
