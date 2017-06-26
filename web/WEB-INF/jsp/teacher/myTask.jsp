@@ -134,7 +134,7 @@
                 editable: true,
                 editableUrl: "post/editTask"
             }, {
-                field: 'operation',
+                field: 'teacherOperation',
                 title: '操作',
                 align: 'center',
                 valign: 'middle'
