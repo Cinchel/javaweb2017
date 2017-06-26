@@ -75,28 +75,28 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-userName">姓名
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="userAdminCreate-userName" required="required" class="form-control col-md-7 col-xs-12">
+                                    <input type="text" id="userAdminCreate-userName" required="required" class="form-control col-md-7 col-xs-12" value="${user.getUserName()}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-phone">电话
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="userAdminCreate-phone" class="form-control col-md-7 col-xs-12" type="text">
+                                    <input id="userAdminCreate-phone" class="form-control col-md-7 col-xs-12" type="text" value="${user.getPhone()}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-title">职称
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="userAdminCreate-title" class="form-control col-md-7 col-xs-12" type="text">
+                                    <input id="userAdminCreate-title" class="form-control col-md-7 col-xs-12" type="text" value="${user.getTitle()}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userAdminCreate-introduction">简介
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea id="userAdminCreate-introduction" class="form-control col-md-7 col-xs-12"></textarea>
+                                    <textarea id="userAdminCreate-introduction" class="form-control col-md-7 col-xs-12">${user.getIntroduction()}</textarea>
                                 </div>
                             </div>
                             <div class="ln_solid"></div>
@@ -169,10 +169,6 @@
             if (result.status == 1) {
                 $('#errorAlert-content').html(result.message);
                 $('#errorAlert').modal('show');
-                $('#userAdminCreate-userName').val('');
-                $('#userAdminCreate-phone').val('');
-                $('#userAdminCreate-title').val('');
-                $('#userAdminCreate-introduction').val('');
             } else {
                 $('#errorAlert-content').html(result.message);
                 $('#errorAlert').modal('show');
