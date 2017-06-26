@@ -84,7 +84,7 @@ public class TaskService {
                 case "class com.entity.ReplyTask":
                     taskType = "回复类任务";
                     obj.put("operation","<button class='btn btn-primary' onclick=\"showReplyMessage(" + task.getId() + ")\">查看回复</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='taskEdit_delete("+task.getId()+")'>删除任务</button>");
-                    obj.put("teacherOperation", "<button class='btn btn-primary' onclick=\"reply(\" + task.getId() + \")\\\">回复</button>");
+                    obj.put("teacherOperation","<button class='btn btn-primary' onclick=\"reply(" + task.getId() + ")\">回复</button>");
                     break;
                 case "class com.entity.FileTask":
                     taskType = "文件类任务";
