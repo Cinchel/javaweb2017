@@ -116,27 +116,6 @@
 
                 <br />
 
-                <!-- sidebar menu -->
-                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                    <div class="menu_section">
-                        <ul class="nav side-menu">
-                            <li><a><i class="fa fa-book"></i> 监考信息 <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    <li><a href="myInvigilation">我的监考</a></li>
-                                    <li><a href="Invigilation">监考信息</a></li>
-                                </ul>
-                            </li>
-
-                            <li><a><i class="fa fa-tasks"></i> 任务信息 <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    <li><a href="myTask">我的任务</a></li>
-                                    <li><a href="Task">监考信息</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
                 <!-- /sidebar menu -->
 
                 <!-- /menu footer buttons -->

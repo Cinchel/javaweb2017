@@ -4,6 +4,7 @@ import com.entity.Admin;
 import com.entity.Exam;
 import com.entity.ExamTeacher;
 import com.entity.User;
+import com.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +50,24 @@ public class ExamDao extends GenericDao<Exam>{
         }
         else list = query.getResultList();
         return list;
+    }
+    //监考时间是否冲突
+    public boolean isConflict(User teacher, Exam exam) {
+        //...........*............*............
+        //.........*........*..................
+        //.........*....................*......
+        //................*.....*..............
+        //................*.............*......
+        String jpql = "SELECT count(*) from Exam e WHERE e in (select et.exam from ExamTeacher et where et.teacher=:teacher) " +
+                "AND e!=:exam AND e.date = :date AND e.startTime <= :endTime AND e.endTime >= :startTime";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("exam", exam);
+        query.setParameter("teacher", teacher);
+        query.setParameter("date", exam.getDate());
+        query.setParameter("endTime", exam.getEndTime());
+        query.setParameter("startTime", exam.getStartTime());
+        Long count = (Long)query.getSingleResult();
+        return count!=0;
     }
 
     @Transactional
@@ -136,5 +155,15 @@ public class ExamDao extends GenericDao<Exam>{
         Query query =  this.getEntityManager().createNativeQuery(sql);
         query.setParameter(1,examId);
         query.executeUpdate();
+    }
+
+    public Long FutureExamCount(User teacher) {
+        Date date = DateUtils.getNowDate();
+
+        String jpql = "select count(*) from Exam e where e.date>=:date AND e in (select et.exam from ExamTeacher et where et.teacher = :teacher)";
+        Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("teacher", teacher);
+        query.setParameter("date", date);
+        return (Long)query.getSingleResult();
     }
 }

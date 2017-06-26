@@ -44,6 +44,7 @@ public class ExamService {
         List<Exam> list = examDao.examList(offset,limit);
         List<JSONObject> list2 = new ArrayList<JSONObject>();
         for(Exam exam : list) {
+            String status = "未分配";
             JSONObject obj = new JSONObject();
             obj.put("id",exam.getId());
             obj.put("name",exam.getName());
@@ -56,10 +57,19 @@ public class ExamService {
             obj.put("operation","<button class='btn btn-primary' onclick=\"chooseTeacher(" + exam.getId() + ",'选择监考教师："+exam.getName()+"')\"><i class=\"fa fa-user\"></i>&nbsp;选择监考老师</button>&nbsp;&nbsp;<button class='btn btn-danger' onclick='examEdit_delete("+exam.getId()+")'>删除考试</button>");
             Set<ExamTeacher> li = exam.getExamTeacher();
             String teachers = "";
+            if(exam.getNumber() == li.size()) status = "已分配";
             for (ExamTeacher examTeacher:li) {
-                teachers += examTeacher.getTeacher().getUserName()+",";
+                String tmp = examTeacher.getTeacher().getUserName();
+                if(examDao.isConflict(examTeacher.getTeacher(),exam)) {
+                    tmp="<span class=\"label label-danger\" data-toggle=\"tooltip\" title=\"时间冲突\">"+tmp+"</span>";
+                    status = "未分配";
+                }
+                tmp+="、";
+                teachers += tmp;
             }
+            if(teachers.length()>0) teachers = teachers.substring(0,teachers.length()-1);
             obj.put("teachers",teachers);
+            obj.put("status",status);
             list2.add(obj);
         }
         return JsonUtils.writeTableList(examDao.ExamCount(), list2);
@@ -147,6 +157,7 @@ public class ExamService {
             obj.put("phone",user.getPhone());
             obj.put("title",user.getTitle());
             obj.put("introduction",user.getIntroduction());
+            obj.put("futureExamCount",examDao.FutureExamCount(user));
             list2.add(obj);
         }
         return list2.toString();

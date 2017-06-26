@@ -8,7 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="head.jsp"/>
 
-
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -158,6 +157,11 @@
                 align: 'center',
                 valign: 'middle'
             }, {
+                field: 'status',
+                title: '状态',
+                align: 'center',
+                valign: 'middle'
+            }, {
                 field: 'operation',
                 title: '操作',
                 align: 'center',
@@ -205,7 +209,13 @@
                 field: 'introduction',
                 title: '简介',
                 align: 'center',
-                valign: 'middle'
+                valign: 'middle',
+            },{
+                field: 'futureExamCount',
+                title: '已有监考',
+                align: 'center',
+                valign: 'middle',
+                sortable: true
             }],
             pagination: true,
             sidePagination: 'client',
